@@ -1,0 +1,49 @@
+# ── Dependencies ────────────────────────────────────────────────────────────
+vendor/
+node_modules/
+
+# ── Composer ─────────────────────────────────────────────────────────────────
+composer.lock
+
+# ── npm / build artefacts ────────────────────────────────────────────────────
+package-lock.json
+yarn.lock
+dist/
+build/
+
+# ── Test output ──────────────────────────────────────────────────────────────
+.phpunit.result.cache
+coverage/
+*.clover
+*.xml
+!phpunit.xml.dist
+
+# ── WordPress test suite (checked out locally by install-wp-tests.sh) ────────
+/tmp/wordpress/
+/tmp/wordpress-tests-lib/
+
+# ── Environment / secrets ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+wp-tests-config.php
+
+# ── OS & editor cruft ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.iml
+
+# ── Release artefacts ────────────────────────────────────────────────────────
+*.zip
+*.tar.gz
+
+# ── PHPStan / PHPCS cache ────────────────────────────────────────────────────
+.phpstan-cache/
+.phpcs-cache/
+phpstan.neon
+!phpstan.neon.dist

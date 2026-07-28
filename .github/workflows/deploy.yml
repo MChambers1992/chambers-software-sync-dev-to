@@ -1,0 +1,75 @@
+name: Deploy release
+
+# Fires on a version tag (e.g. v1.3.0). Builds a clean plugin zip, attaches
+# it to a GitHub Release, and — if WP.org SVN credentials are configured —
+# pushes the same code to the WP.org plugin SVN repository.
+#
+# Required repo secrets for the WP.org deploy job (skipped entirely if unset,
+# so tagging still works for a GitHub-only release before you've set these up):
+#   SVN_USERNAME — your WordPress.org account username
+#   SVN_PASSWORD — your WordPress.org account password
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build plugin zip
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derive version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify tag matches plugin version header
+        run: |
+          header_version=$(grep -oP "Version:\s*\K[0-9.]+" cross-post-devto.php)
+          if [ "$header_version" != "${{ steps.version.outputs.version }}" ]; then
+            echo "Tag v${{ steps.version.outputs.version }} does not match Version: $header_version in cross-post-devto.php" >&2
+            exit 1
+          fi
+
+      - name: Assemble clean plugin directory
+        run: |
+          mkdir -p build/cross-post-devto
+          rsync -a --exclude-from='.distignore' ./ build/cross-post-devto/
+
+      - name: Zip plugin
+        run: |
+          cd build
+          zip -r "../cross-post-devto-${{ steps.version.outputs.version }}.zip" cross-post-devto
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-zip
+          path: cross-post-devto-*.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: cross-post-devto-*.zip
+          generate_release_notes: true
+
+  deploy-wordpress-org:
+    name: Deploy to WP.org SVN
+    needs: build
+    runs-on: ubuntu-latest
+    # Skips cleanly (rather than failing) until SVN_USERNAME/SVN_PASSWORD are
+    # added as repo secrets — see the note at the top of this file.
+    if: ${{ vars.WPORG_DEPLOY_ENABLED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: cross-post-devto

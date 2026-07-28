@@ -1,0 +1,388 @@
+/* ============================================================
+   Cross Post for Dev.to – Admin Styles
+   ============================================================ */
+
+/* ── Settings page ─────────────────────────────────────────── */
+.devto-settings-wrap h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.devto-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: -0.5px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.devto-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px 20px 20px;
+    margin-bottom: 20px;
+    max-width: 900px;
+}
+
+.devto-card h2 {
+    margin-top: 0;
+    padding-top: 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #3c434a;
+}
+
+.devto-card-danger {
+    border-color: #f0b849;
+}
+
+.devto-card-danger h2 {
+    color: #996800;
+}
+
+.devto-tag-table {
+    max-width: 600px;
+    margin-top: 10px;
+}
+
+.devto-tag-table th,
+.devto-tag-table td {
+    padding: 8px 10px;
+}
+
+#devto-test-result {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+#devto-test-result.success { color: #00a32a; }
+#devto-test-result.error   { color: #d63638; }
+
+/* ── Metabox ────────────────────────────────────────────────── */
+.devto-mb-wrap {
+    font-size: 13px;
+    color: #3c434a;
+}
+
+.devto-mb-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.devto-mb-status.synced {
+    background: #edfaef;
+    color: #00a32a;
+    border: 1px solid #b8e6bf;
+}
+
+.devto-mb-status.pending {
+    background: #f6f7f7;
+    color: #787c82;
+    border: 1px solid #dcdcde;
+}
+
+.devto-mb-field {
+    margin: 6px 0;
+}
+
+.devto-mb-meta {
+    font-size: 11px;
+    color: #787c82;
+}
+
+.devto-mb-hr {
+    border: none;
+    border-top: 1px solid #dcdcde;
+    margin: 10px 0;
+}
+
+.devto-mb-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.devto-mb-toggle-disabled {
+    cursor: not-allowed;
+    color: #9ea3a8;
+}
+
+.devto-mb-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* ── Per-post overrides ──────────────────────────────────────── */
+.devto-mb-overrides summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    color: #787c82;
+}
+
+.devto-mb-overrides .devto-mb-field {
+    margin-top: 10px;
+}
+
+.devto-mb-overrides label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3c434a;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 3px;
+}
+
+/* ── Log ───────────────────────────────────────────────────── */
+.devto-mb-log summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    color: #787c82;
+    margin-top: 4px;
+}
+
+.devto-mb-log ul {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 3px;
+    padding: 6px 8px;
+}
+
+.devto-mb-log li {
+    padding: 2px 0;
+    font-size: 11px;
+    line-height: 1.5;
+    border-bottom: 1px solid #eee;
+}
+
+.devto-mb-log li:last-child {
+    border-bottom: none;
+}
+
+.devto-log-time {
+    color: #787c82;
+    margin-right: 6px;
+}
+
+.devto-log-error   { color: #d63638; }
+.devto-log-success { color: #00a32a; }
+
+#devto-sync-status.syncing { color: #2271b1; }
+#devto-sync-status.success { color: #00a32a; }
+#devto-sync-status.error   { color: #d63638; }
+
+/* ── Bulk Sync page ─────────────────────────────────────────── */
+.devto-bulk-intro {
+    max-width: 900px;
+    color: #50575e;
+    margin-bottom: 16px;
+}
+
+.devto-bulk-filters .devto-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.devto-bulk-filters .devto-filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.devto-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.devto-filter-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3c434a;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.devto-filter-group select,
+.devto-filter-group input[type="text"] {
+    min-width: 160px;
+}
+
+.devto-filter-action {
+    justify-content: flex-end;
+    padding-bottom: 1px;
+}
+
+.devto-resync-row {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f1;
+}
+
+/* ── Bulk table ──────────────────────────────────────────────── */
+.devto-bulk-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.devto-bulk-count {
+    font-size: 13px;
+    color: #50575e;
+    font-weight: 600;
+}
+
+.devto-bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.devto-bulk-table {
+    font-size: 13px;
+}
+
+.devto-bulk-table .col-check { width: 30px; }
+.devto-bulk-table .col-type  { width: 80px; }
+.devto-bulk-table .col-date  { width: 100px; }
+.devto-bulk-table .col-status { width: 180px; }
+.devto-bulk-table .col-result { width: 220px; }
+
+.devto-bulk-table thead th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #50575e;
+}
+
+.devto-bulk-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+/* ── Row status badges ───────────────────────────────────────── */
+.devto-row-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.devto-row-status.synced {
+    background: #edfaef;
+    color: #00a32a;
+    border: 1px solid #b8e6bf;
+}
+
+.devto-row-status.unsynced {
+    background: #f6f7f7;
+    color: #787c82;
+    border: 1px solid #dcdcde;
+}
+
+.devto-row-skipped-flag {
+    font-size: 11px;
+    color: #9ea3a8;
+    font-style: italic;
+    display: inline-block;
+    margin-left: 4px;
+}
+
+/* ── Result cells ───────────────────────────────────────────── */
+.devto-result {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.devto-result.synced  { color: #00a32a; }
+.devto-result.skipped { color: #787c82; }
+.devto-result.error   { color: #d63638; }
+
+/* Row flash animations after a batch result */
+@keyframes devto-flash-synced {
+    0%   { background-color: #edfaef; }
+    100% { background-color: transparent; }
+}
+@keyframes devto-flash-error {
+    0%   { background-color: #fcf0f1; }
+    100% { background-color: transparent; }
+}
+@keyframes devto-flash-skipped {
+    0%   { background-color: #f9f9f9; }
+    100% { background-color: transparent; }
+}
+
+.devto-row-flash-synced  { animation: devto-flash-synced  1.5s ease-out; }
+.devto-row-flash-error   { animation: devto-flash-error   1.5s ease-out; }
+.devto-row-flash-skipped { animation: devto-flash-skipped 1.5s ease-out; }
+
+/* ── Progress bar ────────────────────────────────────────────── */
+.devto-progress-bar-outer {
+    width: 100%;
+    max-width: 600px;
+    height: 10px;
+    background: #f0f0f1;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.devto-progress-bar-inner {
+    height: 100%;
+    background: #2271b1;
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.devto-progress-label {
+    font-size: 13px;
+    color: #50575e;
+    margin-bottom: 10px;
+}
+
+.devto-progress-counts {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+}
+
+.devto-count-synced  { color: #00a32a; }
+.devto-count-skipped { color: #787c82; }
+.devto-count-failed  { color: #d63638; }

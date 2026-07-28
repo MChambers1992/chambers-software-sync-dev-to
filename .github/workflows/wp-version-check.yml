@@ -1,0 +1,66 @@
+name: WordPress version check
+
+# Keeps readme.txt's "Tested up to" honest as WordPress core ships new
+# versions, without relying on anyone remembering to do it by hand.
+# The tests.yml workflow already runs the integration suite against
+# "latest" on every push/PR, so once this opens a PR bumping the header,
+# normal CI on that PR is what actually proves compatibility — this
+# workflow only detects the drift and proposes the change.
+
+on:
+  schedule:
+    # Every Monday at 09:00 UTC.
+    - cron: '0 9 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get latest stable WordPress version
+        id: wp
+        run: |
+          latest=$(curl -s https://api.wordpress.org/core/version-check/1.7/ \
+            | php -r '$d = json_decode(file_get_contents("php://stdin"), true); echo $d["offers"][0]["current"];')
+          if [ -z "$latest" ]; then
+            echo "Could not determine latest WordPress version." >&2
+            exit 1
+          fi
+          # readme.txt's "Tested up to" only needs major.minor, e.g. 6.7 not 6.7.1.
+          latest_minor=$(echo "$latest" | cut -d. -f1,2)
+          echo "latest=$latest_minor" >> "$GITHUB_OUTPUT"
+
+      - name: Get current "Tested up to" value
+        id: current
+        run: |
+          current=$(grep -oP '^Tested up to:\s*\K.+' readme.txt | tr -d '[:space:]')
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+
+      - name: Update readme.txt if outdated
+        if: steps.wp.outputs.latest != steps.current.outputs.current
+        run: |
+          sed -i "s/^Tested up to:.*/Tested up to: ${{ steps.wp.outputs.latest }}/" readme.txt
+
+      - name: Open pull request
+        if: steps.wp.outputs.latest != steps.current.outputs.current
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Bump Tested up to: WordPress ${{ steps.wp.outputs.latest }}"
+          title: "Bump Tested up to: WordPress ${{ steps.wp.outputs.latest }}"
+          body: |
+            WordPress ${{ steps.wp.outputs.latest }} is now the latest stable release.
+
+            This bumps readme.txt's `Tested up to` header to match. The integration
+            test matrix in `tests.yml` runs against `latest` on this PR — check that
+            it's green before merging, since that's the actual compatibility proof,
+            not this bot.
+          branch: bot/wp-version-bump
+          labels: |
+            automated
+            wordpress-compatibility

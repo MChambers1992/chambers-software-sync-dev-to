@@ -1,0 +1,25 @@
+/.git
+/.github
+/.gitignore
+/.distignore
+/tests
+/bin
+/build
+/coverage
+/node_modules
+/vendor
+/*.zip
+/composer.json
+/composer.lock
+/phpunit.xml.dist
+/phpcs.xml.dist
+/phpstan.neon.dist
+/CLAUDE.md
+/CHANGELOG.md
+/README.md
+
+# WP.org SVN listing assets (banner/icon/screenshots) live here, NOT in
+# /assets — that directory is the plugin's own runtime CSS/JS and ships in
+# the release zip. Keep marketing images out of it entirely so they can
+# never accidentally get packaged into the plugin.
+/.wordpress-org
