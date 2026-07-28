@@ -14,10 +14,35 @@
     <config name="testVersion" value="7.4-"/>
 
     <rule ref="WordPress">
-        <!-- Short array syntax is used throughout and is intentional. -->
+        <!-- Short array syntax is used throughout and is intentional.
+             WPCS 3.x pulls this rule from two different sniff namespaces —
+             both need excluding, not just one. -->
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
         <!-- Plugin uses typed properties/return types (PHP 7.4+ baseline). -->
         <exclude name="Squiz.Commenting"/>
+        <!-- 4-space indentation is used consistently throughout, not WP
+             core's tabs convention. Reformatting the whole codebase to tabs
+             now would be a large, purely mechanical, high-risk diff for no
+             functional benefit — this project intentionally isn't matching
+             WP core's raw indentation style, same as most modern plugins. -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <!-- Yoda conditions are WP core's own legacy style choice; PHPStan
+             (level 5, run separately) already catches accidental
+             assignment-in-condition bugs, which is what Yoda conditions
+             exist to prevent. Not enforcing this stylistic-only rule. -->
+        <exclude name="WordPress.PHP.YodaConditions"/>
+        <!-- Our file naming (class-publisher.php, not
+             class-cross-post-devto-publisher.php) is the plugin's established,
+             documented convention (see CLAUDE.md's architecture table) —
+             not a violation to fix, a style already chosen deliberately. -->
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <!-- Exact `=>`/`=` column alignment across multi-line statements is
+             high-churn (any edit that changes one key's length invalidates
+             alignment on every other line in the block) for no readability
+             gain over consistent single-space alignment. -->
+        <exclude name="Generic.Formatting.MultipleStatementAlignment"/>
+        <exclude name="WordPress.Arrays.MultipleStatementAlignment"/>
     </rule>
 
     <rule ref="WordPress.WP.I18n">
