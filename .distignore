@@ -4,6 +4,7 @@
 /.gitignore
 /.gitattributes
 /.distignore
+/.releaserc.json
 /tests
 /bin
 /build
@@ -13,6 +14,8 @@
 /*.zip
 /composer.json
 /composer.lock
+/package.json
+/package-lock.json
 /phpunit.xml.dist
 /phpcs.xml.dist
 /phpstan.neon.dist
