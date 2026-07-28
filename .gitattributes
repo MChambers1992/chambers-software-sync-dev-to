@@ -1,6 +1,9 @@
-# Shell scripts must keep LF line endings — a CRLF shebang line
-# (`#!/usr/bin/env bash\r`) fails with "bad interpreter" wherever they're
-# executed directly (git hooks, CI). This matters most for .githooks/pre-push,
-# which Git invokes straight off its shebang, not via an explicit `bash …`.
-*.sh text eol=lf
-.githooks/* text eol=lf
+# Force LF everywhere, regardless of the checking-out OS's core.autocrlf.
+# Two concrete reasons this matters, not just tidiness:
+#  - A CRLF shebang line (`#!/usr/bin/env bash\r`) fails with "bad
+#    interpreter" wherever a script is executed directly (git hooks, CI).
+#  - PHPCS's Generic.Files.LineEndings sniff flags CRLF as an error — on a
+#    Windows checkout with the default core.autocrlf=true, every PHP file
+#    would otherwise get checked out with CRLF and fail lint on line 1 of
+#    every single file before any real sniff even runs.
+* text=auto eol=lf

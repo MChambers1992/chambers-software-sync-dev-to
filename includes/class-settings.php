@@ -89,16 +89,20 @@ class Cross_Post_DevTo_Settings {
             return;
         }
 
-        // Gather post types.
-        $raw_types = isset( $_POST['post_types'] ) ? (array) $_POST['post_types'] : [];
+        // Gather post types. Sanitized immediately below via array_map(
+        // 'sanitize_key', ... ) — PHPCS can't trace sanitization across
+        // the two statements.
+        $raw_types = isset( $_POST['post_types'] ) ? (array) wp_unslash( $_POST['post_types'] ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $post_types = array_map( 'sanitize_key', $raw_types );
 
-        // Gather excluded categories.
-        $raw_cats   = isset( $_POST['exclude_cats'] ) ? (array) $_POST['exclude_cats'] : [];
+        // Gather excluded categories. Sanitized immediately below via
+        // array_map( 'absint', ... ).
+        $raw_cats   = isset( $_POST['exclude_cats'] ) ? (array) wp_unslash( $_POST['exclude_cats'] ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $excl_cats  = array_map( 'absint', $raw_cats );
 
-        // Tag mappings: wp_term_name => devto_tag.
-        $raw_mappings = isset( $_POST['tag_mappings'] ) ? (array) $_POST['tag_mappings'] : [];
+        // Tag mappings: wp_term_name => devto_tag. Both key and value are
+        // sanitized per-item via sanitize_text_field() in the loop below.
+        $raw_mappings = isset( $_POST['tag_mappings'] ) ? (array) wp_unslash( $_POST['tag_mappings'] ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $tag_mappings = [];
         foreach ( $raw_mappings as $wp_term => $devto_tag ) {
             $wp_term  = sanitize_text_field( $wp_term );
@@ -207,7 +211,7 @@ class Cross_Post_DevTo_Settings {
         $s          = self::get();
         $post_types = get_post_types( [ 'public' => true ], 'objects' );
         $categories = get_categories( [ 'hide_empty' => false ] );
-        $saved      = isset( $_GET['saved'] );
+        $saved      = isset( $_GET['saved'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display flag; the actual save already went through nonce verification in handle_save().
         ?>
         <div class="wrap devto-settings-wrap">
             <h1>

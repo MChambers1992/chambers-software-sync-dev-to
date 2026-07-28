@@ -43,17 +43,46 @@
              gain over consistent single-space alignment. -->
         <exclude name="Generic.Formatting.MultipleStatementAlignment"/>
         <exclude name="WordPress.Arrays.MultipleStatementAlignment"/>
+        <!-- These four formatting sniffs disagree with each other on how to
+             reformat the same multi-line function calls/arrays (one wants
+             tabs, another wants every item on its own line, another wants a
+             specific bracket placement) — running phpcbf with them active
+             produced inconsistent mixed tab/space indentation across files
+             that were previously uniform. Excluding them keeps calls like
+             `new WP_Error( 'code', $msg, [ 'status' => $code ] )` and short
+             inline arrays exactly as written, which is how this codebase is
+             consistently formatted throughout. -->
+        <exclude name="PEAR.Functions.FunctionCallSignature"/>
+        <exclude name="Generic.Functions.FunctionCallArgumentSpacing"/>
+        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing"/>
+        <exclude name="WordPress.Arrays.ArrayIndentation"/>
+        <exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing"/>
+        <exclude name="NormalizedArrays.Arrays.CommaAfterLast"/>
+        <!-- Templated PHP/HTML files (metabox, settings, bulk-sync pages)
+             intentionally use compact inline `<?php ... ?>` tags, which is
+             the standard WordPress admin-page template pattern. -->
+        <exclude name="Squiz.PHP.EmbeddedPhp"/>
+        <!-- `$x ?: $y` is a deliberate, well-understood PHP idiom here
+             (e.g. `$retry_after ?: null`), not the "rarely used correctly"
+             case this sniff guards against. -->
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
     </rule>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="cross-post-devto"/>
+            <property name="text_domain" type="array">
+                <element value="cross-post-devto"/>
+            </property>
         </properties>
     </rule>
 
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="cross_post_devto,Cross_Post_DevTo,CROSS_POST_DEVTO"/>
+            <property name="prefixes" type="array">
+                <element value="cross_post_devto"/>
+                <element value="Cross_Post_DevTo"/>
+                <element value="CROSS_POST_DEVTO"/>
+            </property>
         </properties>
     </rule>
 </ruleset>

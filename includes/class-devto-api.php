@@ -13,7 +13,7 @@ class Cross_Post_DevTo_API {
 
     const BASE_URL = 'https://dev.to/api/';
 
-    /** @var string */
+    /** Dev.to API key used to authenticate every request. @var string */
     private $api_key;
 
     public function __construct( string $api_key ) {

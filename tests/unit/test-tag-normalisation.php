@@ -71,7 +71,10 @@ class Test_Tag_Normalisation extends TestCase {
     }
 
     public function test_normalise_all_special_chars_returns_empty(): void {
-        $this->assertSame( '', $this->normalise( '!@#$%^&*()' ) );
+        // '#' is excluded here — it's spelled out to "sharp" rather than
+        // stripped (see test_normalise_strips_special_characters), so it's
+        // no longer "just noise" from the normaliser's perspective.
+        $this->assertSame( '', $this->normalise( '!@$%^&*()' ) );
     }
 
     // ── resolve_tags() ────────────────────────────────────────────────────────

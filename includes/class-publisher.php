@@ -15,7 +15,7 @@ class Cross_Post_DevTo_Publisher {
     const META_MAIN_IMAGE    = '_devto_main_image_override';
     const META_ORG_ID        = '_devto_organization_id';
 
-    /** @deprecated Superseded by META_CROSS_POST. Kept read-only for legacy opt-outs. */
+    /** Legacy per-post opt-out flag. @deprecated Superseded by META_CROSS_POST. Kept read-only for legacy opt-outs. */
     const META_SKIP          = '_devto_skip';
 
     public static function init() {
@@ -54,7 +54,7 @@ class Cross_Post_DevTo_Publisher {
         // Only sync updates when the content actually changed.
         if (
             $post_after->post_content === $post_before->post_content &&
-            $post_after->post_title   === $post_before->post_title   &&
+            $post_after->post_title === $post_before->post_title &&
             $post_after->post_excerpt === $post_before->post_excerpt
         ) {
             return;
@@ -295,6 +295,7 @@ class Cross_Post_DevTo_Publisher {
      */
     private static function convert_content( WP_Post $post ): string {
         // Run through WP's content filters to expand blocks/shortcodes.
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- invoking WP core's own existing hook, not registering a new one.
         $html = apply_filters( 'the_content', $post->post_content );
 
         // Strip <script> and <style> tags entirely.
@@ -317,6 +318,7 @@ class Cross_Post_DevTo_Publisher {
      *   3. Convert block elements (headings, blockquote, lists, hr, p, br).
      *   4. Restore code block placeholders.
      */
+    // phpcs:disable WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- wp_strip_all_tags() requires WP loaded; this method is deliberately pure PHP so tests/unit/test-html-to-markdown.php can exercise it via Brain\Monkey without a full WP bootstrap.
     private static function html_to_markdown( string $html ): string {
         // Normalise line endings.
         $html = str_replace( [ "\r\n", "\r" ], "\n", $html );
@@ -497,6 +499,7 @@ class Cross_Post_DevTo_Publisher {
 
         return trim( $html );
     }
+    // phpcs:enable WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 
     // -------------------------------------------------------------------------
     // Tag resolution
@@ -536,6 +539,10 @@ class Cross_Post_DevTo_Publisher {
      */
     private static function normalise_tag( string $tag ): string {
         $tag = strtolower( $tag );
+        // Spell out '#' so tags like "C#" become "csharp" — the tag Dev.to
+        // actually uses — instead of silently losing the character entirely
+        // under the generic alphanumeric strip below.
+        $tag = str_replace( '#', 'sharp', $tag );
         $tag = preg_replace( '/[^a-z0-9]/', '', $tag );
         return $tag;
     }
@@ -605,6 +612,7 @@ class Cross_Post_DevTo_Publisher {
         if ( ! empty( $post->post_excerpt ) ) {
             return wp_strip_all_tags( $post->post_excerpt );
         }
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- invoking WP core's own existing hook, not registering a new one.
         $content = wp_strip_all_tags( apply_filters( 'the_content', $post->post_content ) );
         return wp_trim_words( $content, 30, '' );
     }

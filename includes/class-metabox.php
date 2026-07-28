@@ -14,7 +14,7 @@ class Cross_Post_DevTo_Metabox {
 
     public static function init() {
         add_action( 'add_meta_boxes', [ __CLASS__, 'register' ] );
-        add_action( 'save_post',      [ __CLASS__, 'save' ], 10, 2 );
+        add_action( 'save_post',      [ __CLASS__, 'save' ], 10, 1 );
         add_action( 'wp_ajax_cross_post_devto_sync_now', [ __CLASS__, 'ajax_sync_now' ] );
         add_action( 'enqueue_block_editor_assets',  [ __CLASS__, 'enqueue_block_assets' ] );
         add_action( 'admin_enqueue_scripts',        [ __CLASS__, 'enqueue_classic_assets' ] );
@@ -215,7 +215,7 @@ class Cross_Post_DevTo_Metabox {
         <?php
     }
 
-    public static function save( int $post_id, WP_Post $post ) {
+    public static function save( int $post_id ) {
         if (
             ! isset( $_POST['cross_post_devto_mb_nonce'] ) ||
             ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['cross_post_devto_mb_nonce'] ) ), 'cross_post_devto_metabox' )

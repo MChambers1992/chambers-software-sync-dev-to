@@ -196,8 +196,8 @@
             var batchIds = batches[ batchIndex ];
             $progressLabel.text(
                 crossPostDevToBulk.strings.syncing
-                    .replace( '%d', Math.min( done + batchSize, total ) )
-                    .replace( '%d', total )
+                    .replace( '%1$d', Math.min( done + batchSize, total ) )
+                    .replace( '%2$d', total )
             );
 
             $.post( crossPostDevToBulk.ajaxUrl, {
@@ -257,9 +257,9 @@
         $progressLabel.html(
             '<strong>'
             + crossPostDevToBulk.strings.done
-                .replace( '%d', counts.synced )
-                .replace( '%d', counts.skipped )
-                .replace( '%d', counts.failed )
+                .replace( '%1$d', counts.synced )
+                .replace( '%2$d', counts.skipped )
+                .replace( '%3$d', counts.failed )
             + '</strong>'
         );
     }

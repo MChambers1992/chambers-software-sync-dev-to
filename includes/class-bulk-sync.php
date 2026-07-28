@@ -68,8 +68,11 @@ class Cross_Post_DevTo_Bulk_Sync {
             'batchSize'     => self::BATCH_SIZE,
             'strings'       => [
                 'processing'    => __( 'Processing…', 'cross-post-devto' ),
-                'syncing'       => __( 'Syncing post %d of %d…', 'cross-post-devto' ),
-                'done'          => __( 'Done! %d synced, %d skipped, %d failed.', 'cross-post-devto' ),
+                /* translators: 1: current post number being synced, 2: total post count in this run */
+                'syncing'       => __( 'Syncing post %1$d of %2$d…', 'cross-post-devto' ),
+                /* translators: 1: number of posts synced, 2: number skipped, 3: number failed */
+                'done'          => __( 'Done! %1$d synced, %2$d skipped, %3$d failed.', 'cross-post-devto' ),
+                /* translators: %d: number of posts that will be synced */
                 'confirmStart'  => __( 'This will sync %d posts to Dev.to. Continue?', 'cross-post-devto' ),
                 'noSelection'   => __( 'Please select at least one post.', 'cross-post-devto' ),
                 'loadError'     => __( 'Failed to load posts. Please reload the page.', 'cross-post-devto' ),
@@ -125,7 +128,7 @@ class Cross_Post_DevTo_Bulk_Sync {
                             <?php foreach ( $post_types as $pt ) :
                                 $obj = get_post_type_object( $pt );
                                 $label = $obj ? $obj->label : $pt;
-                            ?>
+                                ?>
                                 <option value="<?php echo esc_attr( $pt ); ?>"><?php echo esc_html( $label ); ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -230,7 +233,7 @@ class Cross_Post_DevTo_Bulk_Sync {
         }
 
         $settings    = Cross_Post_DevTo_Settings::get();
-        $post_type   = sanitize_key( $_POST['post_type']   ?? 'post' );
+        $post_type   = sanitize_key( $_POST['post_type'] ?? 'post' );
         $sync_status = sanitize_key( $_POST['sync_status'] ?? 'all' );
         $search      = sanitize_text_field( wp_unslash( $_POST['search'] ?? '' ) );
 
@@ -258,14 +261,17 @@ class Cross_Post_DevTo_Bulk_Sync {
             $args['s'] = $search;
         }
 
-        // Filter by sync status using meta_query.
+        // Filter by sync status using meta_query. This page is an infrequent
+        // manual admin action (not a hot path), and there's no non-meta way
+        // to ask "which posts have/don't have this meta key" — the slow-query
+        // warning is a known, accepted tradeoff here.
         if ( $sync_status === 'synced' ) {
-            $args['meta_query'] = [ [
+            $args['meta_query'] = [ [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                 'key'     => Cross_Post_DevTo_Publisher::META_DEVTO_ID,
                 'compare' => 'EXISTS',
             ] ];
         } elseif ( $sync_status === 'unsynced' ) {
-            $args['meta_query'] = [ [
+            $args['meta_query'] = [ [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                 'relation' => 'OR',
                 [
                     'key'     => Cross_Post_DevTo_Publisher::META_DEVTO_ID,
@@ -333,6 +339,7 @@ class Cross_Post_DevTo_Bulk_Sync {
             wp_send_json_error( 'No API key configured.' );
         }
 
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded array elements are sanitized via array_map( 'absint', ... ) below; PHPCS can't trace sanitization through json_decode().
         $raw_ids = json_decode( wp_unslash( $_POST['post_ids'] ?? '[]' ), true );
         if ( ! is_array( $raw_ids ) ) {
             wp_send_json_error( 'Invalid post_ids payload.' );
