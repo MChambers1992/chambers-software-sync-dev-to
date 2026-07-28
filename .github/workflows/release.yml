@@ -8,16 +8,15 @@ name: Semantic Release
 # deploy.yml will pick up and deploy to WP.org (when configured).
 
 on:
-  workflow_run:
-    workflows: [ Tests ]
+  push:
     branches: [ main ]
-    types: [ completed ]
 
 jobs:
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
+    # Skip if this is a chore(release) commit (to avoid infinite loops)
+    if: ${{ !contains(github.event.head_commit.message, 'chore(release)') }}
     permissions:
       contents: write
     steps:
@@ -31,8 +30,13 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Install semantic-release dependencies
-        run: npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/exec
+        run: npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/exec @semantic-release/github
 
       - name: Run semantic-release
         env:
