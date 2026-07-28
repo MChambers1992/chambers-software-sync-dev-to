@@ -138,6 +138,31 @@ The error is logged to the per-post sync log (visible in the metabox). The post 
 
 ---
 
+## Releases
+
+This project uses **semantic versioning** with automated releases. Commit messages must start with a semantic version tag:
+
+- `[Patch]` — bug fixes, minor improvements
+- `[Minor]` — new features, backwards compatible
+- `[Major]` — breaking changes
+- `[BREAKING]` — explicit breaking change marker
+
+**Example:**
+```
+[Patch] Fix featured image sync issue
+[Minor] Add organization publishing support
+[Major] Rewrite sync engine
+```
+
+When tests pass on `main`, the release workflow automatically:
+1. Analyzes commit messages
+2. Bumps the version number
+3. Updates the plugin header
+4. Creates a git tag (`v1.0.1`, etc.)
+5. Publishes a GitHub release with the plugin zip
+
+---
+
 ## License
 
 GPL-2.0+
