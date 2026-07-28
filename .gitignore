@@ -47,3 +47,7 @@ Thumbs.db
 .phpcs-cache/
 phpstan.neon
 !phpstan.neon.dist
+
+# ── Local scratch / logs ─────────────────────────────────────────────────────
+*.log
+phpcs-report.txt

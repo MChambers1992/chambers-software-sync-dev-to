@@ -39,6 +39,7 @@
         "phpcbf":          "phpcbf",
         "analyse":         "phpstan analyse --configuration phpstan.neon.dist --memory-limit=2G --no-progress --debug",
         "check":           [ "@phpcs", "@analyse", "@test:unit" ],
+        "build:zip":       "php bin/build-zip.php",
         "post-install-cmd": "git config core.hooksPath .githooks || true",
         "post-update-cmd":  "git config core.hooksPath .githooks || true"
     },
