@@ -9,30 +9,20 @@
       "@semantic-release/commit-analyzer",
       {
         "preset": "angular",
-        "releaseRules": [
-          {
-            "message": "/\\[Major\\]/",
-            "release": "major"
-          },
-          {
-            "message": "/\\[Minor\\]/",
-            "release": "minor"
-          },
-          {
-            "message": "/\\[Patch\\]/",
-            "release": "patch"
-          },
-          {
-            "message": "/\\[BREAKING\\]/",
-            "release": "major"
-          }
-        ],
         "parserOpts": {
+          "headerPattern": "^\\[(\\w+)\\]\\s+(.*)$",
+          "headerCorrespondence": [ "type", "subject" ],
           "noteKeywords": [
             "BREAKING CHANGE",
             "BREAKING"
           ]
-        }
+        },
+        "releaseRules": [
+          { "type": "Major", "release": "major" },
+          { "type": "Minor", "release": "minor" },
+          { "type": "Patch", "release": "patch" },
+          { "type": "BREAKING", "release": "major" }
+        ]
       }
     ],
     [
@@ -40,6 +30,8 @@
       {
         "preset": "angular",
         "parserOpts": {
+          "headerPattern": "^\\[(\\w+)\\]\\s+(.*)$",
+          "headerCorrespondence": [ "type", "subject" ],
           "noteKeywords": [
             "BREAKING CHANGE",
             "BREAKING"
