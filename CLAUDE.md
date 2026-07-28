@@ -212,6 +212,7 @@ inside cell text are escaped (`\|`) so they don't break the table structure.
 ### Stack
 
 - **PHPUnit 9** (compatible with WP test suite)
+- **yoast/phpunit-polyfills** — required by WP core's test suite bootstrap itself (not optional). `tests/bootstrap.php` points WP core at it via the `WP_TESTS_PHPUNIT_POLYFILLS_PATH` constant before requiring `$wp_tests_dir/includes/bootstrap.php`; without it WP core's bootstrap fails outright with "PHPUnit Polyfills library is a requirement". Do not `define( 'ABSPATH', ... )` yourself in the integration branch — WP core's bootstrap does that via the `wp-tests-config.php` that `bin/install-wp-tests.sh` generates, and predefining it a second time throws a "Constant ABSPATH already defined" notice.
 - **WordPress test suite** (loaded via `tests/bootstrap.php`)
 - Unit tests in `tests/unit/` — cover pure logic (Markdown conversion, tag normalisation, API class with mocked HTTP)
 - Integration tests in `tests/integration/` — cover Publisher sync flow against a real WP test DB

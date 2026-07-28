@@ -29,8 +29,16 @@ if ( $wp_tests_dir && is_dir( $wp_tests_dir ) ) {
     // ── Integration mode: full WordPress test suite ───────────────────────────
     define( 'CROSS_POST_DEVTO_TESTS_MODE', 'integration' );
 
-    // Prevent the plugin from exiting due to ABSPATH check.
-    define( 'ABSPATH', $wp_tests_dir . '/src/' );
+    // WP core's own bootstrap (required below) loads wp-tests-config.php,
+    // which defines ABSPATH itself — do not predefine it here, or WP core
+    // hits a "Constant ABSPATH already defined" notice trying to redefine it.
+
+    // WP core's test suite bootstrap requires the PHPUnit Polyfills bridge
+    // library (github.com/Yoast/PHPUnit-Polyfills) and loads it itself once
+    // this constant points at where composer installed it.
+    if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
+        define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', dirname( __DIR__ ) . '/vendor/yoast/phpunit-polyfills' );
+    }
 
     // Load WP test functions (gives us WP_UnitTestCase etc.).
     require_once $wp_tests_dir . '/includes/functions.php';
