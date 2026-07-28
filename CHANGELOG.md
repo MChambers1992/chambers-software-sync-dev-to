@@ -1,3 +1,5 @@
+# 1.0.0 (2026-07-28)
+
 # Changelog
 
 All notable changes to Cross Post for Dev.to are documented here.
