@@ -54,7 +54,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "sed -i 's/Version:\\s*[0-9.]*/Version: ${nextRelease.version}/' cross-post-devto.php && sed -i 's/CROSS_POST_DEVTO_VERSION.*=.*;/CROSS_POST_DEVTO_VERSION = \\\"${nextRelease.version}\\\";/' cross-post-devto.php"
+        "prepareCmd": "sed -i \"s/Version: *[0-9.]*$/Version:     ${nextRelease.version}/\" cross-post-devto.php && sed -i \"s/CROSS_POST_DEVTO_VERSION', '[^']*'/CROSS_POST_DEVTO_VERSION', '${nextRelease.version}'/\" cross-post-devto.php"
       }
     ],
     [
