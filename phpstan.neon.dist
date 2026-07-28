@@ -7,10 +7,15 @@ parameters:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
         - .phpstan/constants.php
     # Each parallel worker independently loads the full WordPress stubs
-    # (thousands of declarations) into its own process, which was crashing
-    # workers even at a 512M per-process memory limit. This is a 6-file
-    # codebase — analysing it single-process is plenty fast and avoids the
-    # crash entirely rather than chasing a bigger memory ceiling.
+    # (thousands of declarations) into its own process. maximumNumberOfProcesses: 1
+    # only caps the worker POOL at one — it still spawns a separate worker
+    # process, which kept crashing on CI's Linux runners at 512M and even
+    # 2G, despite working fine locally on Windows at 512M. composer.json's
+    # "analyse" script also passes --debug, which is what actually
+    # eliminates the worker process entirely (true single-process
+    # analysis) — that combination is what's reliable, not this setting on
+    # its own. Kept as a second line of defense in case --debug is ever
+    # dropped from the script.
     parallel:
         maximumNumberOfProcesses: 1
 
