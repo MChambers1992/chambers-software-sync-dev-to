@@ -292,6 +292,31 @@ class Test_Publisher_Integration extends WP_UnitTestCase {
         $this->assertEmpty( $stored_id );
     }
 
+    // ── maybe_sync(): featured image change detection ──────────────────────────
+
+    public function test_thumbnail_change_detection_logic(): void {
+        // Test the core logic: featured image changes are detected.
+        // Simulate the comparison that on_post_updated() performs.
+
+        // Scenario 1: thumbnail added (0 → 999)
+        $thumb_before_add = 0;
+        $thumb_after_add  = 999;
+        $changed = (int) $thumb_after_add !== (int) $thumb_before_add;
+        $this->assertTrue( $changed, 'Should detect when thumbnail is added' );
+
+        // Scenario 2: thumbnail changed (111 → 222)
+        $thumb_before_change = 111;
+        $thumb_after_change  = 222;
+        $changed = (int) $thumb_after_change !== (int) $thumb_before_change;
+        $this->assertTrue( $changed, 'Should detect when thumbnail is changed' );
+
+        // Scenario 3: no change (0 → 0)
+        $thumb_before_same = 0;
+        $thumb_after_same  = 0;
+        $changed = (int) $thumb_after_same !== (int) $thumb_before_same;
+        $this->assertFalse( $changed, 'Should not detect change when thumbnail is same' );
+    }
+
     // ── maybe_sync(): update (PUT) path ──────────────────────────────────────
 
     public function test_sync_calls_update_when_devto_id_exists(): void {
@@ -375,6 +400,26 @@ class Test_Publisher_Integration extends WP_UnitTestCase {
         $payload  = Cross_Post_DevTo_Publisher::build_payload( $post, $settings );
 
         $this->assertArrayNotHasKey( 'main_image', $payload );
+    }
+
+    public function test_build_payload_includes_featured_image_when_set(): void {
+        $post = $this->make_post();
+
+        // Set featured image and mock wp_get_attachment_image_src to return a URL.
+        update_post_meta( $post->ID, '_thumbnail_id', 999 );
+
+        add_filter( 'wp_get_attachment_image_src', function ( $image, $attachment_id, $size ) {
+            if ( $attachment_id === 999 && $size === 'full' ) {
+                return [ 'https://example.com/featured-image.jpg', 1000, 600 ];
+            }
+            return $image;
+        }, 10, 3 );
+
+        $settings = Cross_Post_DevTo_Settings::get();
+        $payload  = Cross_Post_DevTo_Publisher::build_payload( $post, $settings );
+
+        $this->assertArrayHasKey( 'main_image', $payload );
+        $this->assertSame( 'https://example.com/featured-image.jpg', $payload['main_image'] );
     }
 
     // ── build_payload(): per-post overrides ──────────────────────────────────

@@ -52,10 +52,12 @@ class Cross_Post_DevTo_Publisher {
             return;
         }
         // Only sync updates when the content actually changed.
+        $thumb_changed = (int) get_post_thumbnail_id( $post_after->ID ) !== (int) get_post_thumbnail_id( $post_before->ID );
         if (
             $post_after->post_content === $post_before->post_content &&
             $post_after->post_title === $post_before->post_title &&
-            $post_after->post_excerpt === $post_before->post_excerpt
+            $post_after->post_excerpt === $post_before->post_excerpt &&
+            ! $thumb_changed
         ) {
             return;
         }
