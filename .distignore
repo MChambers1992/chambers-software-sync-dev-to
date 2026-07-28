@@ -1,6 +1,8 @@
 /.git
 /.github
+/.githooks
 /.gitignore
+/.gitattributes
 /.distignore
 /tests
 /bin
@@ -14,6 +16,7 @@
 /phpunit.xml.dist
 /phpcs.xml.dist
 /phpstan.neon.dist
+/.phpstan
 /CLAUDE.md
 /CHANGELOG.md
 /README.md

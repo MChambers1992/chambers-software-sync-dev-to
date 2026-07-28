@@ -234,7 +234,25 @@ composer test:integration
 
 # With coverage (requires Xdebug or PCOV)
 composer test:coverage
+
+# Everything lint.yml checks, in one command (PHPCS + PHPStan + unit tests —
+# not integration, since that needs a real MySQL DB)
+composer check
 ```
+
+### Pre-push hook
+
+`composer install` (and `composer update`) automatically runs
+`git config core.hooksPath .githooks`, which points Git at the
+version-controlled `.githooks/pre-push` script instead of the default
+(gitignored, per-clone) `.git/hooks/`. That script runs `php -l` on every
+file, then `composer check` (PHPCS, PHPStan, unit tests), and **blocks the
+push** if any of them fail — the same checks `lint.yml` runs in CI, just
+running before code leaves your machine instead of after. Skip it once with
+`git push --no-verify` if you need to.
+
+If you never ran `composer install` in this clone (or cloned before this
+hook existed), wire it up manually: `git config core.hooksPath .githooks`.
 
 ### Mocking WP HTTP in unit tests
 

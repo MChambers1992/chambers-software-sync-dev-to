@@ -320,7 +320,7 @@ class Cross_Post_DevTo_Settings {
                                         <input
                                             type="checkbox"
                                             name="exclude_cats[]"
-                                            value="<?php echo esc_attr( $cat->term_id ); ?>"
+                                            value="<?php echo esc_attr( (string) $cat->term_id ); ?>"
                                             <?php checked( in_array( (int) $cat->term_id, (array) $s['exclude_cats'], true ) ); ?>
                                         />
                                         <?php echo esc_html( $cat->name ); ?>

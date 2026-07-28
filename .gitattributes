@@ -1,0 +1,6 @@
+# Shell scripts must keep LF line endings — a CRLF shebang line
+# (`#!/usr/bin/env bash\r`) fails with "bad interpreter" wherever they're
+# executed directly (git hooks, CI). This matters most for .githooks/pre-push,
+# which Git invokes straight off its shebang, not via an explicit `bash …`.
+*.sh text eol=lf
+.githooks/* text eol=lf

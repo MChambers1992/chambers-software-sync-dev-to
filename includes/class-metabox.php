@@ -180,7 +180,7 @@ class Cross_Post_DevTo_Metabox {
                         type="button"
                         id="devto-sync-now"
                         class="button button-secondary"
-                        data-post-id="<?php echo esc_attr( $post->ID ); ?>"
+                        data-post-id="<?php echo esc_attr( (string) $post->ID ); ?>"
                         data-nonce="<?php echo esc_attr( wp_create_nonce( 'cross_post_devto_sync_now' ) ); ?>"
                     >
                         <?php esc_html_e( '↺ Sync Now', 'cross-post-devto' ); ?>

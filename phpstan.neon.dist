@@ -5,6 +5,7 @@ parameters:
         - cross-post-devto.php
     bootstrapFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+        - .phpstan/constants.php
 
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon

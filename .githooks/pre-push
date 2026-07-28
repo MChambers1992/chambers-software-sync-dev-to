@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Runs the same checks CI runs (minus the full WP integration suite, which
+# needs a MySQL DB) before code leaves this machine. Blocks the push on
+# failure. Install once per clone with:
+#   git config core.hooksPath .githooks
+# (composer install does this automatically — see composer.json's
+# post-install-cmd/post-update-cmd.)
+#
+# Skip once with: git push --no-verify
+
+set -e
+
+if [ ! -f vendor/autoload.php ]; then
+    echo "vendor/ missing — run 'composer install' first. Skipping pre-push checks."
+    exit 0
+fi
+
+echo "── php -l ──────────────────────────────────────────────"
+find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
+
+echo "── PHPCS (WordPress coding standards) ──────────────────"
+composer phpcs
+
+echo "── PHPStan ──────────────────────────────────────────────"
+composer analyse
+
+echo "── PHPUnit (unit tests only — integration needs a DB) ──"
+composer test:unit
+
+echo "All pre-push checks passed."

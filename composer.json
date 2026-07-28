@@ -37,7 +37,10 @@
         "test:coverage":   "phpunit --configuration phpunit.xml.dist --coverage-html coverage/",
         "phpcs":           "phpcs",
         "phpcbf":          "phpcbf",
-        "analyse":         "phpstan analyse --configuration phpstan.neon.dist"
+        "analyse":         "phpstan analyse --configuration phpstan.neon.dist",
+        "check":           [ "@phpcs", "@analyse", "@test:unit" ],
+        "post-install-cmd": "git config core.hooksPath .githooks || true",
+        "post-update-cmd":  "git config core.hooksPath .githooks || true"
     },
     "config": {
         "allow-plugins": {
