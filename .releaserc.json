@@ -2,6 +2,8 @@
   "branches": [
     "main"
   ],
+  "repositoryUrl": "https://github.com/MChambers1992/cross-post-devto.git",
+  "tagFormat": "v${version}",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",

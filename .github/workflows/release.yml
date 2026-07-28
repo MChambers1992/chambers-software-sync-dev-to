@@ -19,11 +19,21 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, 'chore(release)') }}
     permissions:
       contents: write
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: true
+
+      - name: Verify tags are fetched
+        run: |
+          git fetch --tags --force
+          echo "Existing tags:"
+          git tag -l || echo "(none)"
+          echo "Current branch: $(git branch --show-current)"
+          echo "HEAD commit: $(git log -1 --oneline)"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -41,4 +51,6 @@ jobs:
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEBUG: semantic-release:*
+        run: npx semantic-release --debug
