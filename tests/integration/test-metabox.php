@@ -16,6 +16,12 @@ class Test_Metabox_Integration extends WP_UnitTestCase {
             'auto_publish' => true,
             'post_types'   => [ 'post' ],
         ] );
+
+        // save() checks current_user_can( 'edit_post', $post_id ), which is
+        // false with no current user set — WP_UnitTestCase doesn't log
+        // anyone in by default.
+        $editor_id = $this->factory->user->create( [ 'role' => 'editor' ] );
+        wp_set_current_user( $editor_id );
     }
 
     public function tearDown(): void {

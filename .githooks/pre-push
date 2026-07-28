@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Runs the same checks CI runs (minus the full WP integration suite, which
-# needs a MySQL DB) before code leaves this machine. Blocks the push on
-# failure. Install once per clone with:
+# Runs the same checks CI runs before code leaves this machine. Blocks the
+# push on failure. Install once per clone with:
 #   git config core.hooksPath .githooks
 # (composer install does this automatically — see composer.json's
 # post-install-cmd/post-update-cmd.)
@@ -24,7 +23,23 @@ composer phpcs
 echo "── PHPStan ──────────────────────────────────────────────"
 composer analyse
 
-echo "── PHPUnit (unit tests only — integration needs a DB) ──"
+echo "── PHPUnit: unit tests ──────────────────────────────────"
 composer test:unit
+
+echo "── PHPUnit: integration tests ───────────────────────────"
+: "${WP_TESTS_DIR:=/tmp/wordpress-tests-lib}"
+if [ -d "$WP_TESTS_DIR" ]; then
+    WP_TESTS_DIR="$WP_TESTS_DIR" composer test:integration
+else
+    cat <<EOF
+No WP test suite found at \$WP_TESTS_DIR ($WP_TESTS_DIR) — skipping
+integration tests locally (they'll still run in CI). To run them here too:
+  bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+  export WP_TESTS_DIR=/tmp/wordpress-tests-lib   # add to your shell profile
+On native Windows PHP (not WSL), point WP_TESTS_DIR/WP_CORE_DIR at a
+Windows-style path instead (e.g. C:/wp-test-env/...) — PHP can't resolve
+/tmp/... the way Git Bash does. See CLAUDE.md's Testing section.
+EOF
+fi
 
 echo "All pre-push checks passed."

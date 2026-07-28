@@ -36,13 +36,20 @@ if ( ! function_exists( 'cross_post_devto_run_uninstall' ) ) {
 
         // Per-post sync logs are dynamically-named options
         // (devto_log_{post_id}), so they have to be found by pattern rather
-        // than a known key.
-        $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        // than a known key — there's no delete_option() equivalent for
+        // pattern matching. Deleted one at a time via delete_option() rather
+        // than a single raw DELETE query, since a raw query bypasses the
+        // object cache entirely and leaves get_option() serving stale
+        // cached values for the rest of the request.
+        $log_option_names = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->prepare(
-                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
                 $wpdb->esc_like( 'devto_log_' ) . '%'
             )
         );
+        foreach ( $log_option_names as $option_name ) {
+            delete_option( $option_name );
+        }
 
         // Post meta written by the plugin, including the deprecated legacy key.
         $meta_keys = [

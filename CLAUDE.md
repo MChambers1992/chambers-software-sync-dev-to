@@ -235,10 +235,27 @@ composer test:integration
 # With coverage (requires Xdebug or PCOV)
 composer test:coverage
 
-# Everything lint.yml checks, in one command (PHPCS + PHPStan + unit tests —
-# not integration, since that needs a real MySQL DB)
+# Everything lint.yml + tests.yml check locally, in one command
 composer check
 ```
+
+**Native Windows PHP + `WP_TESTS_DIR`/`WP_CORE_DIR`:** `bin/install-wp-tests.sh`
+defaults both to POSIX-style `/tmp/...` paths. Under Git Bash that's fine for
+the shell commands (svn checkout, mysqladmin) in the script itself, but the
+*generated* `wp-tests-config.php` bakes that same literal `/tmp/...` string
+in as `ABSPATH`, and native Windows `php.exe` has no MSYS path translation —
+it fails with "Failed opening required '/tmp/wordpress/src/wp-settings.php'".
+Point both env vars at a Windows-style path instead before running the
+installer, e.g.:
+```bash
+export WP_TESTS_DIR="C:/wp-test-env/wordpress-tests-lib"
+export WP_CORE_DIR="C:/wp-test-env/wordpress"
+bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+```
+Set these as persistent User environment variables (not just shell-session
+exports) so the pre-push hook's integration-test step finds them too — it
+runs via Git's own hook invocation, which doesn't inherit one-off
+`export`s from whatever terminal you happened to run `composer install` in.
 
 ### Pre-push hook
 
@@ -246,10 +263,16 @@ composer check
 `git config core.hooksPath .githooks`, which points Git at the
 version-controlled `.githooks/pre-push` script instead of the default
 (gitignored, per-clone) `.git/hooks/`. That script runs `php -l` on every
-file, then `composer check` (PHPCS, PHPStan, unit tests), and **blocks the
-push** if any of them fail — the same checks `lint.yml` runs in CI, just
+file, `composer check` (PHPCS, PHPStan, unit tests), and integration tests —
+and **blocks the push** if any of them fail — the same checks CI runs, just
 running before code leaves your machine instead of after. Skip it once with
 `git push --no-verify` if you need to.
+
+Integration tests only run if `$WP_TESTS_DIR` (or the script's `/tmp/...`
+default) points at an already-installed WP test suite; otherwise that step
+prints setup instructions and skips gracefully rather than blocking the push
+— not every contributor will have a local MySQL instance set up, and CI runs
+the real thing regardless.
 
 If you never ran `composer install` in this clone (or cloned before this
 hook existed), wire it up manually: `git config core.hooksPath .githooks`.

@@ -11,7 +11,15 @@
  *   2. WP_TESTS_DIR env var pointing to the checked-out test lib.
  *   3. A real MySQL database for the test suite.
  *
- * The bootstrap detects which suite is running based on WP_TESTS_DIR.
+ * The bootstrap detects which suite is running from the --testsuite CLI
+ * argument when present (composer test:unit / test:integration both pass
+ * one), falling back to WP_TESTS_DIR's presence otherwise. The explicit
+ * --testsuite check matters: WP_TESTS_DIR is commonly exported permanently
+ * in a plugin dev's shell profile (or this repo's pre-push hook, which
+ * runs both suites back to back), and without it `composer test:unit`
+ * would silently boot the real WP_Post/WP core instead of this suite's
+ * own Brain\Monkey stubs — which then throws deep inside WP core, not
+ * obviously pointing back at "wrong bootstrap mode" as the cause.
  */
 
 // ── Composer autoloader ───────────────────────────────────────────────────────
@@ -23,9 +31,27 @@ if ( ! file_exists( $autoloader ) ) {
 require_once $autoloader;
 
 // ── Determine test mode ───────────────────────────────────────────────────────
+$requested_suite = null;
+foreach ( $_SERVER['argv'] ?? [] as $i => $arg ) {
+    if ( $arg === '--testsuite' && isset( $_SERVER['argv'][ $i + 1 ] ) ) {
+        $requested_suite = $_SERVER['argv'][ $i + 1 ];
+        break;
+    }
+}
+
 $wp_tests_dir = getenv( 'WP_TESTS_DIR' );
 
-if ( $wp_tests_dir && is_dir( $wp_tests_dir ) ) {
+if ( $requested_suite === 'unit' ) {
+    $use_integration_mode = false;
+} elseif ( $requested_suite === 'integration' ) {
+    $use_integration_mode = true;
+} else {
+    // No explicit --testsuite (e.g. `composer test` running everything) —
+    // fall back to the original presence-based heuristic.
+    $use_integration_mode = (bool) ( $wp_tests_dir && is_dir( $wp_tests_dir ) );
+}
+
+if ( $use_integration_mode ) {
     // ── Integration mode: full WordPress test suite ───────────────────────────
     define( 'CROSS_POST_DEVTO_TESTS_MODE', 'integration' );
 
@@ -55,6 +81,7 @@ if ( $wp_tests_dir && is_dir( $wp_tests_dir ) ) {
         require_once CROSS_POST_DEVTO_PATH . 'includes/class-publisher.php';
         require_once CROSS_POST_DEVTO_PATH . 'includes/class-settings.php';
         require_once CROSS_POST_DEVTO_PATH . 'includes/class-metabox.php';
+        require_once CROSS_POST_DEVTO_PATH . 'includes/class-bulk-sync.php';
     } );
 
     require_once $wp_tests_dir . '/includes/bootstrap.php';
