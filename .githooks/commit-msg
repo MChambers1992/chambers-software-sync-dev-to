@@ -1,0 +1,25 @@
+#!/bin/bash
+# Validate commit message format: must start with [Patch], [Minor], [Major], or [BREAKING]
+
+msg=$(cat "$1")
+
+# Extract just the first line (subject)
+subject=$(echo "$msg" | head -n 1)
+
+# Check if message starts with a semantic version tag
+if ! echo "$subject" | grep -qE '^\[(Patch|Minor|Major|BREAKING)\]'; then
+  echo ""
+  echo "❌ Commit message must start with a semantic version tag"
+  echo ""
+  echo "Valid formats:"
+  echo "  [Patch] Fix featured image sync"
+  echo "  [Minor] Add new admin setting"
+  echo "  [Major] Rewrite core sync logic"
+  echo "  [BREAKING] Change API response format"
+  echo ""
+  echo "Your message: $subject"
+  echo ""
+  exit 1
+fi
+
+exit 0
