@@ -30,7 +30,7 @@ class Cross_Post_DevTo_Metabox {
 
         foreach ( $allowed_types as $pt ) {
             add_meta_box(
-                'cross-post-devto',
+                'chambers-software-sync-dev-to',
                 '<span class="devto-mb-logo">dev</span> Dev.to Sync',
                 [ __CLASS__, 'render' ],
                 $pt,
@@ -69,11 +69,11 @@ class Cross_Post_DevTo_Metabox {
             <!-- Status banner -->
             <?php if ( $devto_id ) : ?>
                 <div class="devto-mb-status synced">
-                    ✓ <?php esc_html_e( 'Synced to Dev.to', 'cross-post-devto' ); ?>
+                    ✓ <?php esc_html_e( 'Synced to Dev.to', 'chambers-software-sync-dev-to' ); ?>
                 </div>
             <?php else : ?>
                 <div class="devto-mb-status pending">
-                    ○ <?php esc_html_e( 'Not yet synced', 'cross-post-devto' ); ?>
+                    ○ <?php esc_html_e( 'Not yet synced', 'chambers-software-sync-dev-to' ); ?>
                 </div>
             <?php endif; ?>
 
@@ -81,7 +81,7 @@ class Cross_Post_DevTo_Metabox {
             <?php if ( $devto_url ) : ?>
                 <p class="devto-mb-field">
                     <a href="<?php echo esc_url( $devto_url ); ?>" target="_blank" rel="noopener">
-                        <?php esc_html_e( 'View on Dev.to ↗', 'cross-post-devto' ); ?>
+                        <?php esc_html_e( 'View on Dev.to ↗', 'chambers-software-sync-dev-to' ); ?>
                     </a>
                 </p>
             <?php endif; ?>
@@ -91,7 +91,7 @@ class Cross_Post_DevTo_Metabox {
                 <p class="devto-mb-field devto-mb-meta">
                     <?php echo esc_html( sprintf(
                         /* translators: %s = datetime */
-                        __( 'Last synced: %s', 'cross-post-devto' ),
+                        __( 'Last synced: %s', 'chambers-software-sync-dev-to' ),
                         $synced_at
                     ) ); ?>
                 </p>
@@ -109,20 +109,20 @@ class Cross_Post_DevTo_Metabox {
                         value="1"
                         <?php checked( $cross_post ); ?>
                     />
-                    <?php esc_html_e( 'Cross-post this to Dev.to', 'cross-post-devto' ); ?>
+                    <?php esc_html_e( 'Cross-post this to Dev.to', 'chambers-software-sync-dev-to' ); ?>
                 </label>
             <?php else : ?>
                 <label class="devto-mb-toggle devto-mb-toggle-disabled">
                     <input type="checkbox" disabled="disabled" />
-                    <?php esc_html_e( 'Cross-post this to Dev.to', 'cross-post-devto' ); ?>
+                    <?php esc_html_e( 'Cross-post this to Dev.to', 'chambers-software-sync-dev-to' ); ?>
                 </label>
                 <p class="devto-mb-field devto-mb-meta">
                     <?php
                     printf(
                         /* translators: %s = link to Settings page */
-                        esc_html__( 'Add an API key in %s to enable cross-posting.', 'cross-post-devto' ),
+                        esc_html__( 'Add an API key in %s to enable cross-posting.', 'chambers-software-sync-dev-to' ),
                         '<a href="' . esc_url( admin_url( 'options-general.php?page=' . Cross_Post_DevTo_Settings::MENU_SLUG ) ) . '">'
-                        . esc_html__( 'Settings', 'cross-post-devto' ) . '</a>'
+                        . esc_html__( 'Settings', 'chambers-software-sync-dev-to' ) . '</a>'
                     );
                     ?>
                 </p>
@@ -132,34 +132,34 @@ class Cross_Post_DevTo_Metabox {
             <?php if ( $has_key ) : ?>
                 <hr class="devto-mb-hr" />
                 <details class="devto-mb-overrides">
-                    <summary><?php esc_html_e( 'Dev.to overrides (optional)', 'cross-post-devto' ); ?></summary>
+                    <summary><?php esc_html_e( 'Dev.to overrides (optional)', 'chambers-software-sync-dev-to' ); ?></summary>
 
                     <p class="devto-mb-field">
-                        <label for="devto_title_override"><?php esc_html_e( 'Dev.to title', 'cross-post-devto' ); ?></label>
+                        <label for="devto_title_override"><?php esc_html_e( 'Dev.to title', 'chambers-software-sync-dev-to' ); ?></label>
                         <input
                             type="text"
                             id="devto_title_override"
                             name="devto_title_override"
                             value="<?php echo esc_attr( get_post_meta( $post->ID, Cross_Post_DevTo_Publisher::META_TITLE, true ) ); ?>"
                             class="widefat"
-                            placeholder="<?php esc_attr_e( 'Defaults to the WordPress post title', 'cross-post-devto' ); ?>"
+                            placeholder="<?php esc_attr_e( 'Defaults to the WordPress post title', 'chambers-software-sync-dev-to' ); ?>"
                         />
                     </p>
 
                     <p class="devto-mb-field">
-                        <label for="devto_main_image_override"><?php esc_html_e( 'Cover image URL', 'cross-post-devto' ); ?></label>
+                        <label for="devto_main_image_override"><?php esc_html_e( 'Cover image URL', 'chambers-software-sync-dev-to' ); ?></label>
                         <input
                             type="url"
                             id="devto_main_image_override"
                             name="devto_main_image_override"
                             value="<?php echo esc_attr( get_post_meta( $post->ID, Cross_Post_DevTo_Publisher::META_MAIN_IMAGE, true ) ); ?>"
                             class="widefat"
-                            placeholder="<?php esc_attr_e( 'Defaults to the featured image', 'cross-post-devto' ); ?>"
+                            placeholder="<?php esc_attr_e( 'Defaults to the featured image', 'chambers-software-sync-dev-to' ); ?>"
                         />
                     </p>
 
                     <p class="devto-mb-field">
-                        <label for="devto_organization_id"><?php esc_html_e( 'Organization ID', 'cross-post-devto' ); ?></label>
+                        <label for="devto_organization_id"><?php esc_html_e( 'Organization ID', 'chambers-software-sync-dev-to' ); ?></label>
                         <input
                             type="text"
                             id="devto_organization_id"
@@ -167,7 +167,7 @@ class Cross_Post_DevTo_Metabox {
                             value="<?php echo esc_attr( get_post_meta( $post->ID, Cross_Post_DevTo_Publisher::META_ORG_ID, true ) ); ?>"
                             class="widefat"
                             inputmode="numeric"
-                            placeholder="<?php esc_attr_e( 'Defaults to the global setting, if any', 'cross-post-devto' ); ?>"
+                            placeholder="<?php esc_attr_e( 'Defaults to the global setting, if any', 'chambers-software-sync-dev-to' ); ?>"
                         />
                     </p>
                 </details>
@@ -183,7 +183,7 @@ class Cross_Post_DevTo_Metabox {
                         data-post-id="<?php echo esc_attr( (string) $post->ID ); ?>"
                         data-nonce="<?php echo esc_attr( wp_create_nonce( 'cross_post_devto_sync_now' ) ); ?>"
                     >
-                        <?php esc_html_e( '↺ Sync Now', 'cross-post-devto' ); ?>
+                        <?php esc_html_e( '↺ Sync Now', 'chambers-software-sync-dev-to' ); ?>
                     </button>
                     <span id="devto-sync-status" style="margin-left:8px;"></span>
                 </p>
@@ -193,7 +193,7 @@ class Cross_Post_DevTo_Metabox {
             <?php if ( ! empty( $log ) ) : ?>
                 <hr class="devto-mb-hr" />
                 <details class="devto-mb-log">
-                    <summary><?php esc_html_e( 'Sync Log', 'cross-post-devto' ); ?></summary>
+                    <summary><?php esc_html_e( 'Sync Log', 'chambers-software-sync-dev-to' ); ?></summary>
                     <ul>
                         <?php foreach ( array_reverse( $log ) as $entry ) : ?>
                             <li class="devto-log-<?php echo esc_attr( $entry['level'] ); ?>">
@@ -260,12 +260,12 @@ class Cross_Post_DevTo_Metabox {
 
         $post_id = absint( $_POST['post_id'] ?? 0 );
         if ( ! $post_id || ! current_user_can( 'edit_post', $post_id ) ) {
-            wp_send_json_error( [ 'message' => __( 'Permission denied.', 'cross-post-devto' ) ] );
+            wp_send_json_error( [ 'message' => __( 'Permission denied.', 'chambers-software-sync-dev-to' ) ] );
         }
 
         $post = get_post( $post_id );
         if ( ! $post || $post->post_status !== 'publish' ) {
-            wp_send_json_error( [ 'message' => __( 'Post is not published.', 'cross-post-devto' ) ] );
+            wp_send_json_error( [ 'message' => __( 'Post is not published.', 'chambers-software-sync-dev-to' ) ] );
         }
 
         // Manual Sync Now is an intentional action: force bypasses the per-post
@@ -291,7 +291,7 @@ class Cross_Post_DevTo_Metabox {
         }
 
         wp_send_json_success( [
-            'message' => $last['message'] ?? __( 'Synced.', 'cross-post-devto' ),
+            'message' => $last['message'] ?? __( 'Synced.', 'chambers-software-sync-dev-to' ),
             'html'    => $html,
         ] );
     }

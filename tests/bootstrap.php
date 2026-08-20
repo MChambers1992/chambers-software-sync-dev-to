@@ -1,6 +1,6 @@
 <?php
 /**
- * PHPUnit bootstrap for Cross Post for Dev.to tests.
+ * PHPUnit bootstrap for Chambers Software Sync for Dev.to tests.
  *
  * Unit tests (tests/unit/) use Brain\Monkey to mock WordPress functions —
  * they do NOT need a real WP install or database.
@@ -75,7 +75,7 @@ if ( $use_integration_mode ) {
         if ( ! defined( 'CROSS_POST_DEVTO_VERSION' ) ) {
             define( 'CROSS_POST_DEVTO_VERSION', '1.0.0' );
             define( 'CROSS_POST_DEVTO_PATH', dirname( __DIR__ ) . '/' );
-            define( 'CROSS_POST_DEVTO_URL', 'http://example.org/wp-content/plugins/cross-post-devto/' );
+            define( 'CROSS_POST_DEVTO_URL', 'http://example.org/wp-content/plugins/chambers-software-sync-dev-to/' );
         }
         require_once CROSS_POST_DEVTO_PATH . 'includes/class-devto-api.php';
         require_once CROSS_POST_DEVTO_PATH . 'includes/class-publisher.php';
@@ -96,7 +96,7 @@ if ( $use_integration_mode ) {
     // Stub plugin constants.
     define( 'CROSS_POST_DEVTO_VERSION', '1.0.0' );
     define( 'CROSS_POST_DEVTO_PATH', dirname( __DIR__ ) . '/' );
-    define( 'CROSS_POST_DEVTO_URL', 'http://example.org/wp-content/plugins/cross-post-devto/' );
+    define( 'CROSS_POST_DEVTO_URL', 'http://example.org/wp-content/plugins/chambers-software-sync-dev-to/' );
 
     // Load plugin classes directly (no WP bootstrap).
     require_once CROSS_POST_DEVTO_PATH . 'includes/class-devto-api.php';

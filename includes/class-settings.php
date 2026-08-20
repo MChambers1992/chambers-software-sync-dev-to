@@ -2,12 +2,12 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Manages the plugin settings page under Settings > Cross Post for Dev.to.
+ * Manages the plugin settings page under Settings > Sync for Dev.to.
  */
 class Cross_Post_DevTo_Settings {
 
     const OPTION_KEY   = 'cross_post_devto_settings';
-    const MENU_SLUG    = 'cross-post-devto';
+    const MENU_SLUG    = 'chambers-software-sync-dev-to';
     const NONCE_ACTION = 'cross_post_devto_settings_save';
 
     public static function init() {
@@ -32,7 +32,7 @@ class Cross_Post_DevTo_Settings {
         $settings_link = sprintf(
             '<a href="%s">%s</a>',
             esc_url( admin_url( 'options-general.php?page=' . self::MENU_SLUG ) ),
-            esc_html__( 'Settings', 'cross-post-devto' )
+            esc_html__( 'Settings', 'chambers-software-sync-dev-to' )
         );
         array_unshift( $links, $settings_link );
         return $links;
@@ -46,7 +46,7 @@ class Cross_Post_DevTo_Settings {
         check_ajax_referer( 'cross_post_devto_validate', 'nonce' );
 
         if ( ! current_user_can( 'manage_options' ) ) {
-            wp_send_json_error( __( 'Permission denied.', 'cross-post-devto' ) );
+            wp_send_json_error( __( 'Permission denied.', 'chambers-software-sync-dev-to' ) );
         }
 
         $key    = sanitize_text_field( wp_unslash( $_POST['api_key'] ?? '' ) );
@@ -65,8 +65,8 @@ class Cross_Post_DevTo_Settings {
 
     public static function add_menu_page() {
         add_options_page(
-            __( 'Cross Post for Dev.to', 'cross-post-devto' ),
-            __( 'Cross Post for Dev.to', 'cross-post-devto' ),
+            __( 'Chambers Software Sync for Dev.to', 'chambers-software-sync-dev-to' ),
+            __( 'Sync for Dev.to', 'chambers-software-sync-dev-to' ),
             'manage_options',
             self::MENU_SLUG,
             [ __CLASS__, 'render_page' ]
@@ -216,12 +216,12 @@ class Cross_Post_DevTo_Settings {
         <div class="wrap devto-settings-wrap">
             <h1>
                 <span class="devto-logo">dev</span>
-                <?php esc_html_e( 'Cross Post for Dev.to Settings', 'cross-post-devto' ); ?>
+                <?php esc_html_e( 'Chambers Software Sync for Dev.to Settings', 'chambers-software-sync-dev-to' ); ?>
             </h1>
 
             <?php if ( $saved ) : ?>
                 <div class="notice notice-success is-dismissible">
-                    <p><?php esc_html_e( 'Settings saved.', 'cross-post-devto' ); ?></p>
+                    <p><?php esc_html_e( 'Settings saved.', 'chambers-software-sync-dev-to' ); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -230,10 +230,10 @@ class Cross_Post_DevTo_Settings {
 
                 <!-- ── API Key ─────────────────────────────────────────── -->
                 <div class="devto-card">
-                    <h2><?php esc_html_e( 'API Connection', 'cross-post-devto' ); ?></h2>
+                    <h2><?php esc_html_e( 'API Connection', 'chambers-software-sync-dev-to' ); ?></h2>
                     <table class="form-table">
                         <tr>
-                            <th><label for="api_key"><?php esc_html_e( 'Dev.to API Key', 'cross-post-devto' ); ?></label></th>
+                            <th><label for="api_key"><?php esc_html_e( 'Dev.to API Key', 'chambers-software-sync-dev-to' ); ?></label></th>
                             <td>
                                 <input
                                     type="password"
@@ -244,14 +244,14 @@ class Cross_Post_DevTo_Settings {
                                     autocomplete="new-password"
                                 />
                                 <button type="button" id="devto-test-key" class="button button-secondary">
-                                    <?php esc_html_e( 'Test Connection', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Test Connection', 'chambers-software-sync-dev-to' ); ?>
                                 </button>
                                 <span id="devto-test-result"></span>
                                 <p class="description">
                                     <?php
                                     printf(
                                         /* translators: %s = link */
-                                        esc_html__( 'Generate your key at %s → Settings → Extensions → DEV API Keys.', 'cross-post-devto' ),
+                                        esc_html__( 'Generate your key at %s → Settings → Extensions → DEV API Keys.', 'chambers-software-sync-dev-to' ),
                                         '<a href="https://dev.to/settings/extensions" target="_blank" rel="noopener">dev.to</a>'
                                     );
                                     ?>
@@ -263,44 +263,44 @@ class Cross_Post_DevTo_Settings {
 
                 <!-- ── Publishing Behaviour ────────────────────────────── -->
                 <div class="devto-card">
-                    <h2><?php esc_html_e( 'Publishing Behaviour', 'cross-post-devto' ); ?></h2>
+                    <h2><?php esc_html_e( 'Publishing Behaviour', 'chambers-software-sync-dev-to' ); ?></h2>
                     <table class="form-table">
                         <tr>
-                            <th><?php esc_html_e( 'Auto-Publish', 'cross-post-devto' ); ?></th>
+                            <th><?php esc_html_e( 'Auto-Publish', 'chambers-software-sync-dev-to' ); ?></th>
                             <td>
                                 <label>
                                     <input type="checkbox" name="auto_publish" value="1" <?php checked( $s['auto_publish'] ); ?> />
-                                    <?php esc_html_e( 'Automatically sync posts to Dev.to when published or updated', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Automatically sync posts to Dev.to when published or updated', 'chambers-software-sync-dev-to' ); ?>
                                 </label>
                             </td>
                         </tr>
                         <tr>
-                            <th><?php esc_html_e( 'Unpublish on Trash', 'cross-post-devto' ); ?></th>
+                            <th><?php esc_html_e( 'Unpublish on Trash', 'chambers-software-sync-dev-to' ); ?></th>
                             <td>
                                 <label>
                                     <input type="checkbox" name="unpublish_on_trash" value="1" <?php checked( $s['unpublish_on_trash'] ); ?> />
-                                    <?php esc_html_e( 'When a synced post is trashed in WordPress, unpublish its Dev.to article too', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'When a synced post is trashed in WordPress, unpublish its Dev.to article too', 'chambers-software-sync-dev-to' ); ?>
                                 </label>
                                 <p class="description">
-                                    <?php esc_html_e( 'Off by default. Dev.to has no delete API, so this sets the article back to a draft rather than removing it. Restoring the WordPress post from Trash does not automatically re-publish it on Dev.to.', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Off by default. Dev.to has no delete API, so this sets the article back to a draft rather than removing it. Restoring the WordPress post from Trash does not automatically re-publish it on Dev.to.', 'chambers-software-sync-dev-to' ); ?>
                                 </p>
                             </td>
                         </tr>
                         <tr>
-                            <th><label for="default_status"><?php esc_html_e( 'Default Publish Status', 'cross-post-devto' ); ?></label></th>
+                            <th><label for="default_status"><?php esc_html_e( 'Default Publish Status', 'chambers-software-sync-dev-to' ); ?></label></th>
                             <td>
                                 <select id="default_status" name="default_status">
                                     <option value="published" <?php selected( $s['default_status'], 'published' ); ?>>
-                                        <?php esc_html_e( 'Published (live immediately)', 'cross-post-devto' ); ?>
+                                        <?php esc_html_e( 'Published (live immediately)', 'chambers-software-sync-dev-to' ); ?>
                                     </option>
                                     <option value="draft" <?php selected( $s['default_status'], 'draft' ); ?>>
-                                        <?php esc_html_e( 'Draft (review on Dev.to first)', 'cross-post-devto' ); ?>
+                                        <?php esc_html_e( 'Draft (review on Dev.to first)', 'chambers-software-sync-dev-to' ); ?>
                                     </option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <th><?php esc_html_e( 'Allowed Post Types', 'cross-post-devto' ); ?></th>
+                            <th><?php esc_html_e( 'Allowed Post Types', 'chambers-software-sync-dev-to' ); ?></th>
                             <td>
                                 <?php foreach ( $post_types as $pt ) : ?>
                                     <label style="display:block;margin-bottom:4px;">
@@ -317,7 +317,7 @@ class Cross_Post_DevTo_Settings {
                             </td>
                         </tr>
                         <tr>
-                            <th><?php esc_html_e( 'Exclude Categories', 'cross-post-devto' ); ?></th>
+                            <th><?php esc_html_e( 'Exclude Categories', 'chambers-software-sync-dev-to' ); ?></th>
                             <td>
                                 <?php foreach ( $categories as $cat ) : ?>
                                     <label style="display:block;margin-bottom:4px;">
@@ -330,11 +330,11 @@ class Cross_Post_DevTo_Settings {
                                         <?php echo esc_html( $cat->name ); ?>
                                     </label>
                                 <?php endforeach; ?>
-                                <p class="description"><?php esc_html_e( 'Posts in these categories will not be synced.', 'cross-post-devto' ); ?></p>
+                                <p class="description"><?php esc_html_e( 'Posts in these categories will not be synced.', 'chambers-software-sync-dev-to' ); ?></p>
                             </td>
                         </tr>
                         <tr>
-                            <th><label for="organization_id"><?php esc_html_e( 'Default Dev.to Organization ID', 'cross-post-devto' ); ?></label></th>
+                            <th><label for="organization_id"><?php esc_html_e( 'Default Dev.to Organization ID', 'chambers-software-sync-dev-to' ); ?></label></th>
                             <td>
                                 <input
                                     type="text"
@@ -346,7 +346,7 @@ class Cross_Post_DevTo_Settings {
                                     placeholder="e.g. 42"
                                 />
                                 <p class="description">
-                                    <?php esc_html_e( 'Optional. Publish articles under a Dev.to organization instead of your personal account. Find the numeric ID in your organization\'s Dev.to dashboard URL. Leave blank to publish personally. Individual posts can override this in the editor sidebar.', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Optional. Publish articles under a Dev.to organization instead of your personal account. Find the numeric ID in your organization\'s Dev.to dashboard URL. Leave blank to publish personally. Individual posts can override this in the editor sidebar.', 'chambers-software-sync-dev-to' ); ?>
                                 </p>
                             </td>
                         </tr>
@@ -355,16 +355,16 @@ class Cross_Post_DevTo_Settings {
 
                 <!-- ── Tag Mappings ────────────────────────────────────── -->
                 <div class="devto-card">
-                    <h2><?php esc_html_e( 'Tag Mappings', 'cross-post-devto' ); ?></h2>
+                    <h2><?php esc_html_e( 'Tag Mappings', 'chambers-software-sync-dev-to' ); ?></h2>
                     <p class="description">
-                        <?php esc_html_e( 'Map WordPress category/tag names to specific Dev.to tags. Dev.to tags must be lowercase, alphanumeric, no spaces. Max 4 tags per post.', 'cross-post-devto' ); ?>
+                        <?php esc_html_e( 'Map WordPress category/tag names to specific Dev.to tags. Dev.to tags must be lowercase, alphanumeric, no spaces. Max 4 tags per post.', 'chambers-software-sync-dev-to' ); ?>
                     </p>
                     <table class="widefat devto-tag-table" id="devto-tag-mappings">
                         <thead>
                             <tr>
-                                <th><?php esc_html_e( 'WordPress Term', 'cross-post-devto' ); ?></th>
-                                <th><?php esc_html_e( 'Dev.to Tag', 'cross-post-devto' ); ?></th>
-                                <th><?php esc_html_e( 'Remove', 'cross-post-devto' ); ?></th>
+                                <th><?php esc_html_e( 'WordPress Term', 'chambers-software-sync-dev-to' ); ?></th>
+                                <th><?php esc_html_e( 'Dev.to Tag', 'chambers-software-sync-dev-to' ); ?></th>
+                                <th><?php esc_html_e( 'Remove', 'chambers-software-sync-dev-to' ); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -380,32 +380,32 @@ class Cross_Post_DevTo_Settings {
                         </tbody>
                     </table>
                     <div style="margin-top:12px;" id="devto-add-mapping-area">
-                        <input type="text" id="new-wp-term" placeholder="<?php esc_attr_e( 'WordPress term', 'cross-post-devto' ); ?>" class="regular-text" />
-                        <input type="text" id="new-devto-tag" placeholder="<?php esc_attr_e( 'dev.to tag', 'cross-post-devto' ); ?>" class="regular-text" />
-                        <button type="button" id="devto-add-mapping" class="button"><?php esc_html_e( '+ Add Mapping', 'cross-post-devto' ); ?></button>
+                        <input type="text" id="new-wp-term" placeholder="<?php esc_attr_e( 'WordPress term', 'chambers-software-sync-dev-to' ); ?>" class="regular-text" />
+                        <input type="text" id="new-devto-tag" placeholder="<?php esc_attr_e( 'dev.to tag', 'chambers-software-sync-dev-to' ); ?>" class="regular-text" />
+                        <button type="button" id="devto-add-mapping" class="button"><?php esc_html_e( '+ Add Mapping', 'chambers-software-sync-dev-to' ); ?></button>
                     </div>
                 </div>
 
                 <!-- ── Danger Zone ─────────────────────────────────────── -->
                 <div class="devto-card devto-card-danger">
-                    <h2><?php esc_html_e( 'Uninstall', 'cross-post-devto' ); ?></h2>
+                    <h2><?php esc_html_e( 'Uninstall', 'chambers-software-sync-dev-to' ); ?></h2>
                     <table class="form-table">
                         <tr>
-                            <th><?php esc_html_e( 'Delete Data on Uninstall', 'cross-post-devto' ); ?></th>
+                            <th><?php esc_html_e( 'Delete Data on Uninstall', 'chambers-software-sync-dev-to' ); ?></th>
                             <td>
                                 <label>
                                     <input type="checkbox" name="delete_data_on_uninstall" value="1" <?php checked( $s['delete_data_on_uninstall'] ); ?> />
-                                    <?php esc_html_e( 'Permanently delete all plugin settings, sync logs, and post meta when this plugin is deleted', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Permanently delete all plugin settings, sync logs, and post meta when this plugin is deleted', 'chambers-software-sync-dev-to' ); ?>
                                 </label>
                                 <p class="description">
-                                    <?php esc_html_e( 'Off by default. When off, deleting the plugin leaves your settings and sync history in the database so a reinstall picks up where you left off. This never deletes anything on Dev.to itself.', 'cross-post-devto' ); ?>
+                                    <?php esc_html_e( 'Off by default. When off, deleting the plugin leaves your settings and sync history in the database so a reinstall picks up where you left off. This never deletes anything on Dev.to itself.', 'chambers-software-sync-dev-to' ); ?>
                                 </p>
                             </td>
                         </tr>
                     </table>
                 </div>
 
-                <?php submit_button( __( 'Save Settings', 'cross-post-devto' ) ); ?>
+                <?php submit_button( __( 'Save Settings', 'chambers-software-sync-dev-to' ) ); ?>
             </form>
         </div>
         <?php

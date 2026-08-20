@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Cross Post for Dev.to">
-    <description>Coding standards for the Cross Post for Dev.to plugin.</description>
+<ruleset name="Chambers Software Sync for Dev.to">
+    <description>Coding standards for the Chambers Software Sync for Dev.to plugin.</description>
 
     <file>.</file>
     <exclude-pattern>/vendor/*</exclude-pattern>
@@ -73,7 +73,7 @@
     <rule ref="WordPress.WP.I18n">
         <properties>
             <property name="text_domain" type="array">
-                <element value="cross-post-devto"/>
+                <element value="chambers-software-sync-dev-to"/>
             </property>
         </properties>
     </rule>

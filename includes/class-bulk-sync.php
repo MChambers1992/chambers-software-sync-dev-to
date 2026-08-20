@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Cross_Post_DevTo_Bulk_Sync {
 
-    const MENU_SLUG       = 'cross-post-devto-bulk';
+    const MENU_SLUG       = 'chambers-software-sync-dev-to-bulk';
     const BATCH_SIZE      = 10;
     const AJAX_FETCH      = 'cross_post_devto_bulk_fetch';
     const AJAX_PROCESS    = 'cross_post_devto_bulk_process';
@@ -32,8 +32,8 @@ class Cross_Post_DevTo_Bulk_Sync {
 
     public static function add_menu_page() {
         add_management_page(
-            __( 'Dev.to Bulk Sync', 'cross-post-devto' ),
-            __( 'Dev.to Bulk Sync', 'cross-post-devto' ),
+            __( 'Dev.to Bulk Sync', 'chambers-software-sync-dev-to' ),
+            __( 'Dev.to Bulk Sync', 'chambers-software-sync-dev-to' ),
             'manage_options',
             self::MENU_SLUG,
             [ __CLASS__, 'render_page' ]
@@ -67,16 +67,16 @@ class Cross_Post_DevTo_Bulk_Sync {
             'nonceProcess'  => wp_create_nonce( self::AJAX_PROCESS ),
             'batchSize'     => self::BATCH_SIZE,
             'strings'       => [
-                'processing'    => __( 'Processing…', 'cross-post-devto' ),
+                'processing'    => __( 'Processing…', 'chambers-software-sync-dev-to' ),
                 /* translators: 1: current post number being synced, 2: total post count in this run */
-                'syncing'       => __( 'Syncing post %1$d of %2$d…', 'cross-post-devto' ),
+                'syncing'       => __( 'Syncing post %1$d of %2$d…', 'chambers-software-sync-dev-to' ),
                 /* translators: 1: number of posts synced, 2: number skipped, 3: number failed */
-                'done'          => __( 'Done! %1$d synced, %2$d skipped, %3$d failed.', 'cross-post-devto' ),
+                'done'          => __( 'Done! %1$d synced, %2$d skipped, %3$d failed.', 'chambers-software-sync-dev-to' ),
                 /* translators: %d: number of posts that will be synced */
-                'confirmStart'  => __( 'This will sync %d posts to Dev.to. Continue?', 'cross-post-devto' ),
-                'noSelection'   => __( 'Please select at least one post.', 'cross-post-devto' ),
-                'loadError'     => __( 'Failed to load posts. Please reload the page.', 'cross-post-devto' ),
-                'batchError'    => __( 'Batch request failed. Retrying…', 'cross-post-devto' ),
+                'confirmStart'  => __( 'This will sync %d posts to Dev.to. Continue?', 'chambers-software-sync-dev-to' ),
+                'noSelection'   => __( 'Please select at least one post.', 'chambers-software-sync-dev-to' ),
+                'loadError'     => __( 'Failed to load posts. Please reload the page.', 'chambers-software-sync-dev-to' ),
+                'batchError'    => __( 'Batch request failed. Retrying…', 'chambers-software-sync-dev-to' ),
             ],
         ] );
     }
@@ -97,10 +97,10 @@ class Cross_Post_DevTo_Bulk_Sync {
         <div class="wrap devto-settings-wrap">
             <h1>
                 <span class="devto-logo">dev</span>
-                <?php esc_html_e( 'Dev.to Bulk Sync', 'cross-post-devto' ); ?>
+                <?php esc_html_e( 'Dev.to Bulk Sync', 'chambers-software-sync-dev-to' ); ?>
             </h1>
             <p class="devto-bulk-intro">
-                <?php esc_html_e( 'Retrospectively publish existing WordPress posts to Dev.to. Posts already synced show their Dev.to link. Use the filters to narrow the list, then select posts and click Sync Selected.', 'cross-post-devto' ); ?>
+                <?php esc_html_e( 'Retrospectively publish existing WordPress posts to Dev.to. Posts already synced show their Dev.to link. Use the filters to narrow the list, then select posts and click Sync Selected.', 'chambers-software-sync-dev-to' ); ?>
             </p>
 
             <?php if ( ! $has_key ) : ?>
@@ -109,9 +109,9 @@ class Cross_Post_DevTo_Bulk_Sync {
                         <?php
                         printf(
                             /* translators: %s = link */
-                            esc_html__( 'No Dev.to API key configured. %s first.', 'cross-post-devto' ),
+                            esc_html__( 'No Dev.to API key configured. %s first.', 'chambers-software-sync-dev-to' ),
                             '<a href="' . esc_url( admin_url( 'options-general.php?page=' . Cross_Post_DevTo_Settings::MENU_SLUG ) ) . '">'
-                            . esc_html__( 'Add your API key', 'cross-post-devto' ) . '</a>'
+                            . esc_html__( 'Add your API key', 'chambers-software-sync-dev-to' ) . '</a>'
                         );
                         ?>
                     </p>
@@ -120,10 +120,10 @@ class Cross_Post_DevTo_Bulk_Sync {
 
             <!-- ── Filters ────────────────────────────────────────────── -->
             <div class="devto-card devto-bulk-filters">
-                <h2><?php esc_html_e( 'Filters', 'cross-post-devto' ); ?></h2>
+                <h2><?php esc_html_e( 'Filters', 'chambers-software-sync-dev-to' ); ?></h2>
                 <div class="devto-filter-row">
                     <div class="devto-filter-group">
-                        <label for="bulk-post-type"><?php esc_html_e( 'Post Type', 'cross-post-devto' ); ?></label>
+                        <label for="bulk-post-type"><?php esc_html_e( 'Post Type', 'chambers-software-sync-dev-to' ); ?></label>
                         <select id="bulk-post-type">
                             <?php foreach ( $post_types as $pt ) :
                                 $obj = get_post_type_object( $pt );
@@ -134,27 +134,27 @@ class Cross_Post_DevTo_Bulk_Sync {
                         </select>
                     </div>
                     <div class="devto-filter-group">
-                        <label for="bulk-sync-status"><?php esc_html_e( 'Sync Status', 'cross-post-devto' ); ?></label>
+                        <label for="bulk-sync-status"><?php esc_html_e( 'Sync Status', 'chambers-software-sync-dev-to' ); ?></label>
                         <select id="bulk-sync-status">
-                            <option value="all"><?php esc_html_e( 'All posts', 'cross-post-devto' ); ?></option>
-                            <option value="unsynced" selected><?php esc_html_e( 'Not yet synced', 'cross-post-devto' ); ?></option>
-                            <option value="synced"><?php esc_html_e( 'Already synced', 'cross-post-devto' ); ?></option>
+                            <option value="all"><?php esc_html_e( 'All posts', 'chambers-software-sync-dev-to' ); ?></option>
+                            <option value="unsynced" selected><?php esc_html_e( 'Not yet synced', 'chambers-software-sync-dev-to' ); ?></option>
+                            <option value="synced"><?php esc_html_e( 'Already synced', 'chambers-software-sync-dev-to' ); ?></option>
                         </select>
                     </div>
                     <div class="devto-filter-group">
-                        <label for="bulk-search"><?php esc_html_e( 'Search', 'cross-post-devto' ); ?></label>
-                        <input type="text" id="bulk-search" placeholder="<?php esc_attr_e( 'Title keyword…', 'cross-post-devto' ); ?>" />
+                        <label for="bulk-search"><?php esc_html_e( 'Search', 'chambers-software-sync-dev-to' ); ?></label>
+                        <input type="text" id="bulk-search" placeholder="<?php esc_attr_e( 'Title keyword…', 'chambers-software-sync-dev-to' ); ?>" />
                     </div>
                     <div class="devto-filter-group devto-filter-action">
                         <button id="devto-bulk-load" class="button button-secondary" <?php disabled( ! $has_key ); ?>>
-                            <?php esc_html_e( 'Load Posts', 'cross-post-devto' ); ?>
+                            <?php esc_html_e( 'Load Posts', 'chambers-software-sync-dev-to' ); ?>
                         </button>
                     </div>
                 </div>
                 <div class="devto-filter-row devto-resync-row">
                     <label class="devto-mb-toggle">
                         <input type="checkbox" id="bulk-resync" value="1" />
-                        <?php esc_html_e( 'Re-sync posts that are already on Dev.to (will update the existing article)', 'cross-post-devto' ); ?>
+                        <?php esc_html_e( 'Re-sync posts that are already on Dev.to (will update the existing article)', 'chambers-software-sync-dev-to' ); ?>
                     </label>
                 </div>
             </div>
@@ -166,10 +166,10 @@ class Cross_Post_DevTo_Bulk_Sync {
                     <div class="devto-bulk-actions">
                         <label class="devto-mb-toggle" style="margin-right:16px;">
                             <input type="checkbox" id="devto-select-all" />
-                            <?php esc_html_e( 'Select all', 'cross-post-devto' ); ?>
+                            <?php esc_html_e( 'Select all', 'chambers-software-sync-dev-to' ); ?>
                         </label>
                         <button id="devto-sync-selected" class="button button-primary" disabled>
-                            <?php esc_html_e( '↑ Sync Selected', 'cross-post-devto' ); ?>
+                            <?php esc_html_e( '↑ Sync Selected', 'chambers-software-sync-dev-to' ); ?>
                         </button>
                     </div>
                 </div>
@@ -178,11 +178,11 @@ class Cross_Post_DevTo_Bulk_Sync {
                     <thead>
                         <tr>
                             <th class="col-check"></th>
-                            <th class="col-title"><?php esc_html_e( 'Post Title', 'cross-post-devto' ); ?></th>
-                            <th class="col-type"><?php esc_html_e( 'Type', 'cross-post-devto' ); ?></th>
-                            <th class="col-date"><?php esc_html_e( 'Published', 'cross-post-devto' ); ?></th>
-                            <th class="col-status"><?php esc_html_e( 'Dev.to Status', 'cross-post-devto' ); ?></th>
-                            <th class="col-result"><?php esc_html_e( 'Result', 'cross-post-devto' ); ?></th>
+                            <th class="col-title"><?php esc_html_e( 'Post Title', 'chambers-software-sync-dev-to' ); ?></th>
+                            <th class="col-type"><?php esc_html_e( 'Type', 'chambers-software-sync-dev-to' ); ?></th>
+                            <th class="col-date"><?php esc_html_e( 'Published', 'chambers-software-sync-dev-to' ); ?></th>
+                            <th class="col-status"><?php esc_html_e( 'Dev.to Status', 'chambers-software-sync-dev-to' ); ?></th>
+                            <th class="col-result"><?php esc_html_e( 'Result', 'chambers-software-sync-dev-to' ); ?></th>
                         </tr>
                     </thead>
                     <tbody id="devto-bulk-tbody">
@@ -193,22 +193,22 @@ class Cross_Post_DevTo_Bulk_Sync {
 
             <!-- ── Progress bar ───────────────────────────────────────── -->
             <div class="devto-card devto-progress-wrap" id="devto-progress-wrap" style="display:none;">
-                <h2><?php esc_html_e( 'Sync Progress', 'cross-post-devto' ); ?></h2>
+                <h2><?php esc_html_e( 'Sync Progress', 'chambers-software-sync-dev-to' ); ?></h2>
                 <div class="devto-progress-bar-outer">
                     <div class="devto-progress-bar-inner" id="devto-progress-bar"></div>
                 </div>
                 <p id="devto-progress-label" class="devto-progress-label"></p>
                 <div class="devto-progress-counts">
-                    <span class="devto-count-synced">✓ <strong id="count-synced">0</strong> <?php esc_html_e( 'synced', 'cross-post-devto' ); ?></span>
-                    <span class="devto-count-skipped">– <strong id="count-skipped">0</strong> <?php esc_html_e( 'skipped', 'cross-post-devto' ); ?></span>
-                    <span class="devto-count-failed">✗ <strong id="count-failed">0</strong> <?php esc_html_e( 'failed', 'cross-post-devto' ); ?></span>
+                    <span class="devto-count-synced">✓ <strong id="count-synced">0</strong> <?php esc_html_e( 'synced', 'chambers-software-sync-dev-to' ); ?></span>
+                    <span class="devto-count-skipped">– <strong id="count-skipped">0</strong> <?php esc_html_e( 'skipped', 'chambers-software-sync-dev-to' ); ?></span>
+                    <span class="devto-count-failed">✗ <strong id="count-failed">0</strong> <?php esc_html_e( 'failed', 'chambers-software-sync-dev-to' ); ?></span>
                 </div>
             </div>
 
             <!-- ── Loading state ──────────────────────────────────────── -->
             <div id="devto-bulk-loading" style="display:none;">
                 <span class="spinner is-active" style="float:none;margin:0 8px 0 0;"></span>
-                <?php esc_html_e( 'Loading posts…', 'cross-post-devto' ); ?>
+                <?php esc_html_e( 'Loading posts…', 'chambers-software-sync-dev-to' ); ?>
             </div>
             <div id="devto-bulk-error" class="notice notice-error" style="display:none;max-width:900px;">
                 <p id="devto-bulk-error-msg"></p>
@@ -372,7 +372,7 @@ class Cross_Post_DevTo_Bulk_Sync {
         $post = get_post( $post_id );
 
         if ( ! $post || $post->post_status !== 'publish' ) {
-            return self::result( 'skipped', __( 'Post not found or not published.', 'cross-post-devto' ) );
+            return self::result( 'skipped', __( 'Post not found or not published.', 'chambers-software-sync-dev-to' ) );
         }
 
         $existing_id = (int) get_post_meta( $post_id, Cross_Post_DevTo_Publisher::META_DEVTO_ID, true );
@@ -383,7 +383,7 @@ class Cross_Post_DevTo_Bulk_Sync {
                 'skipped',
                 sprintf(
                     /* translators: %d = Dev.to article ID */
-                    __( 'Already synced (Dev.to #%d). Check "Re-sync" to update.', 'cross-post-devto' ),
+                    __( 'Already synced (Dev.to #%d). Check "Re-sync" to update.', 'chambers-software-sync-dev-to' ),
                     $existing_id
                 ),
                 get_post_meta( $post_id, Cross_Post_DevTo_Publisher::META_DEVTO_URL, true ) ?: null
@@ -405,7 +405,7 @@ class Cross_Post_DevTo_Bulk_Sync {
 
         return self::result(
             'synced',
-            $last['message'] ?? __( 'Synced.', 'cross-post-devto' ),
+            $last['message'] ?? __( 'Synced.', 'chambers-software-sync-dev-to' ),
             $devto_url
         );
     }

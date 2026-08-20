@@ -1,20 +1,20 @@
 <?php
 /**
  * Builds the plugin release zip locally — the same file set deploy.yml's
- * "build" job produces (same .distignore exclusions, same cross-post-devto/
+ * "build" job produces (same .distignore exclusions, same chambers-software-sync-dev-to/
  * folder nesting), without needing a tag push or rsync/zip CLI tools that
  * may not exist on every machine. Useful for checking exactly what a
  * release would contain, or building one ad hoc without cutting a release.
  *
  * Usage: php bin/build-zip.php
- * Output: build/cross-post-devto-{version}.zip
+ * Output: build/chambers-software-sync-dev-to-{version}.zip
  */
 
 $root = dirname( __DIR__ );
 chdir( $root );
 
 // ── Read plugin version from the header ─────────────────────────────────
-$main_file = 'cross-post-devto.php';
+$main_file = 'chambers-software-sync-dev-to.php';
 $header    = file_get_contents( $main_file );
 if ( ! preg_match( '/^\s*\*\s*Version:\s*([0-9.]+)/m', $header, $m ) ) {
     fwrite( STDERR, "Could not find a Version: header in {$main_file}\n" );
@@ -78,7 +78,7 @@ if ( empty( $files ) ) {
 }
 
 // ── Build the zip ─────────────────────────────────────────────────────────
-$slug      = 'cross-post-devto';
+$slug      = 'chambers-software-sync-dev-to';
 $build_dir = 'build';
 if ( ! is_dir( $build_dir ) ) {
     mkdir( $build_dir );
