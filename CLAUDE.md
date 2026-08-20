@@ -111,10 +111,19 @@ The plugin's public identity and its internal PHP identifiers deliberately
 |---|---|
 | Display name | `Chambers Software Sync for Dev.to` |
 | Slug / text domain | `chambers-software-sync-dev-to` |
+| Admin page slugs | `chambers-software-sync-dev-to`, `chambers-software-sync-dev-to-bulk` |
+| GitHub repo / package name | `MChambers1992/chambers-software-sync-dev-to` |
 | Class prefix | `Cross_Post_DevTo_` |
 | Constant prefix | `CROSS_POST_DEVTO_` |
 | Option key | `cross_post_devto_settings` |
 | Post meta keys | `_devto_*` |
+| Script/style handles | `cross-post-devto-*` |
+| AJAX action names | `cross_post_devto_*` |
+
+The first four rows are **public identity** — they are user-visible, or point
+at something outside this repo, so they must always read
+`chambers-software-sync-dev-to`. Everything below them is **internal** and
+keeps the `cross_post_devto` / `Cross_Post_DevTo_` family.
 
 The plugin was renamed at WordPress.org review time (the original
 "Cross Post for Dev.to" was rejected as insufficiently distinctive). WP.org
@@ -124,8 +133,18 @@ whatever the slug is. Renaming the option key or meta keys would require a
 migration path for existing installs in exchange for nothing, so they stay.
 
 **When adding new code:** use the existing `Cross_Post_DevTo_` /
-`cross_post_devto_` prefixes for PHP identifiers, and
-`'chambers-software-sync-dev-to'` for the text domain. PHPCS enforces both.
+`cross_post_devto_` prefixes for PHP identifiers, script/style handles, and
+AJAX action names, and `'chambers-software-sync-dev-to'` for the text domain,
+admin page slugs, and any URL pointing back at this repository. PHPCS enforces
+the PHP prefixes and the text domain; the rest is on you.
+
+The repository was renamed alongside the plugin, so **every URL that names the
+repo must use `chambers-software-sync-dev-to`** — the plugin header's
+`Plugin URI`, `composer.json`'s `name`, `.releaserc.json`'s `repositoryUrl`,
+and the CI badge links in `README.md`. GitHub redirects the old
+`cross-post-devto` path, which is exactly why stale references survive
+unnoticed; grep for the old name before shipping a release. `CHANGELOG.md`'s
+1.0.1 entry mentions the old slug as historical record — that one stays.
 
 ---
 

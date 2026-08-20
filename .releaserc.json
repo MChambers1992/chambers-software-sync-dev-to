@@ -2,7 +2,7 @@
   "branches": [
     "main"
   ],
-  "repositoryUrl": "https://github.com/MChambers1992/cross-post-devto.git",
+  "repositoryUrl": "https://github.com/MChambers1992/chambers-software-sync-dev-to.git",
   "tagFormat": "v${version}",
   "plugins": [
     [

@@ -1,7 +1,7 @@
 # Chambers Software Sync for Dev.to
 
-[![Tests](https://github.com/MChambers1992/cross-post-devto/actions/workflows/tests.yml/badge.svg)](https://github.com/MChambers1992/cross-post-devto/actions/workflows/tests.yml)
-[![Lint](https://github.com/MChambers1992/cross-post-devto/actions/workflows/lint.yml/badge.svg)](https://github.com/MChambers1992/cross-post-devto/actions/workflows/lint.yml)
+[![Tests](https://github.com/MChambers1992/chambers-software-sync-dev-to/actions/workflows/tests.yml/badge.svg)](https://github.com/MChambers1992/chambers-software-sync-dev-to/actions/workflows/tests.yml)
+[![Lint](https://github.com/MChambers1992/chambers-software-sync-dev-to/actions/workflows/lint.yml/badge.svg)](https://github.com/MChambers1992/chambers-software-sync-dev-to/actions/workflows/lint.yml)
 
 A WordPress plugin that automatically cross-posts your content to [Dev.to](https://dev.to) whenever you publish or update a post — with canonical URL support, tag mapping, per-post controls, and edit sync.
 
