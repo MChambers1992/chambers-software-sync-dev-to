@@ -2,7 +2,7 @@
 
 # Changelog
 
-All notable changes to Cross Post for Dev.to are documented here.
+All notable changes to Chambers Software Sync for Dev.to are documented here.
 Follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 
 ---
@@ -12,6 +12,22 @@ Follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 ### Planned
 - WP-Cron retry queue for failed syncs.
 - Dev.to series support via custom field or WP taxonomy.
+
+---
+
+## [1.0.1] — 2026-08-20
+
+### Changed
+- **Renamed the plugin** from "Cross Post for Dev.to" to **"Chambers Software Sync for Dev.to"**, with the slug and text domain changing from `cross-post-devto` to `chambers-software-sync-dev-to`, to satisfy the WordPress.org Plugin Review Team's naming and trademark guidelines (a distinctive vendor term now leads the name, with the third-party service named only after "for"). The main plugin file, admin page slugs, and all build/CI slug references were updated to match.
+- Internal PHP identifiers (`Cross_Post_DevTo_*` classes, `CROSS_POST_DEVTO_*` constants, the `cross_post_devto_settings` option key, and the `_devto_*` post meta keys) are deliberately **unchanged** — WordPress.org only requires the text domain to match the slug, so renaming them would mean a data migration for no benefit.
+- Admin menu label is now **Settings → Sync for Dev.to**.
+
+### Added
+- **`== External services ==` section in readme.txt**, documenting the plugin's use of the Dev.to API: what data is sent, on which actions, that nothing is transmitted before an API key is configured, and links to DEV Community's Terms of Use and Privacy Policy.
+- Explicit statement that this plugin is not affiliated with, endorsed by, or sponsored by DEV Community, Forem, or dev.to.
+
+### Fixed
+- `Contributors` in readme.txt corrected to the plugin owner's WordPress.org username (`mchambers92`).
 
 ---
 

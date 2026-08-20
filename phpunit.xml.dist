@@ -21,7 +21,7 @@
     <coverage>
         <include>
             <directory suffix=".php">includes</directory>
-            <file>cross-post-devto.php</file>
+            <file>chambers-software-sync-dev-to.php</file>
         </include>
         <report>
             <html outputDirectory="coverage"/>

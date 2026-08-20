@@ -1,6 +1,6 @@
-# CLAUDE.md — Cross Post for Dev.to
+# CLAUDE.md — Chambers Software Sync for Dev.to
 
-AI implementation guide for the `cross-post-devto` WordPress plugin.
+AI implementation guide for the `chambers-software-sync-dev-to` WordPress plugin.
 Keep this file updated as the architecture evolves.
 
 ---
@@ -14,13 +14,13 @@ A zero-dependency WordPress plugin that cross-posts content to Dev.to via the De
 ## Architecture
 
 ```
-cross-post-devto/
-├── cross-post-devto.php            # Entry point: constants, require_once, hooks
+chambers-software-sync-dev-to/
+├── chambers-software-sync-dev-to.php  # Entry point: constants, require_once, hooks
 ├── uninstall.php                   # Opt-in data cleanup on plugin deletion
 ├── includes/
 │   ├── class-devto-api.php         # HTTP wrapper — all Dev.to API calls live here
 │   ├── class-publisher.php         # Sync logic + HTML→Markdown conversion
-│   ├── class-settings.php          # Admin settings page (Settings → Cross Post for Dev.to)
+│   ├── class-settings.php          # Admin settings page (Settings → Sync for Dev.to)
 │   ├── class-metabox.php           # Editor sidebar panel + Sync Now AJAX
 │   └── class-bulk-sync.php         # Tools → Dev.to Bulk Sync page + batched AJAX
 ├── assets/
@@ -102,11 +102,38 @@ update after an AJAX action.
 
 ---
 
+## Naming: slug vs. internal identifiers
+
+The plugin's public identity and its internal PHP identifiers deliberately
+**do not match**, and this is not drift to be "fixed":
+
+| | Value |
+|---|---|
+| Display name | `Chambers Software Sync for Dev.to` |
+| Slug / text domain | `chambers-software-sync-dev-to` |
+| Class prefix | `Cross_Post_DevTo_` |
+| Constant prefix | `CROSS_POST_DEVTO_` |
+| Option key | `cross_post_devto_settings` |
+| Post meta keys | `_devto_*` |
+
+The plugin was renamed at WordPress.org review time (the original
+"Cross Post for Dev.to" was rejected as insufficiently distinctive). WP.org
+only requires the **text domain to equal the slug** — internal identifiers are
+unconstrained, and `phpcs.xml.dist`'s `PrefixAllGlobals` prefixes stay valid
+whatever the slug is. Renaming the option key or meta keys would require a
+migration path for existing installs in exchange for nothing, so they stay.
+
+**When adding new code:** use the existing `Cross_Post_DevTo_` /
+`cross_post_devto_` prefixes for PHP identifiers, and
+`'chambers-software-sync-dev-to'` for the text domain. PHPCS enforces both.
+
+---
+
 ## Key constants and post meta keys
 
 ```php
-// Defined in cross-post-devto.php
-CROSS_POST_DEVTO_VERSION   // '1.0.0'
+// Defined in chambers-software-sync-dev-to.php
+CROSS_POST_DEVTO_VERSION   // '1.0.1'
 CROSS_POST_DEVTO_PATH      // plugin_dir_path()
 CROSS_POST_DEVTO_URL       // plugin_dir_url()
 CROSS_POST_DEVTO_BASENAME  // plugin_basename() — used for the Plugins-list "Settings" link

@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall handler for Cross Post for Dev.to.
+ * Uninstall handler for Chambers Software Sync for Dev.to.
  *
  * WordPress runs this file when the plugin is deleted through the Plugins
  * screen (not on deactivation). Data is only removed when the user has

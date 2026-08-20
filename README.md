@@ -1,9 +1,11 @@
-# Cross Post for Dev.to
+# Chambers Software Sync for Dev.to
 
 [![Tests](https://github.com/MChambers1992/cross-post-devto/actions/workflows/tests.yml/badge.svg)](https://github.com/MChambers1992/cross-post-devto/actions/workflows/tests.yml)
 [![Lint](https://github.com/MChambers1992/cross-post-devto/actions/workflows/lint.yml/badge.svg)](https://github.com/MChambers1992/cross-post-devto/actions/workflows/lint.yml)
 
 A WordPress plugin that automatically cross-posts your content to [Dev.to](https://dev.to) whenever you publish or update a post — with canonical URL support, tag mapping, per-post controls, and edit sync.
+
+> **Not affiliated with Dev.to.** This is an independent project by Chambers Software. It is not affiliated with, endorsed by, or sponsored by DEV Community, Forem, or dev.to. "Dev.to" and "DEV" are used only to identify the third-party service this plugin connects to.
 
 ---
 
@@ -30,9 +32,9 @@ A WordPress plugin that automatically cross-posts your content to [Dev.to](https
 
 ## Installation
 
-1. Upload the `cross-post-devto` folder to `/wp-content/plugins/`
+1. Upload the `chambers-software-sync-dev-to` folder to `/wp-content/plugins/`
 2. Activate the plugin via **Plugins → Installed Plugins**
-3. Go to **Settings → Cross Post for Dev.to**
+3. Go to **Settings → Sync for Dev.to**
 4. Enter your Dev.to API key (get it from [dev.to/settings/extensions](https://dev.to/settings/extensions))
 5. Click **Test Connection** to verify, then **Save Settings**
 
@@ -50,7 +52,7 @@ A WordPress plugin that automatically cross-posts your content to [Dev.to](https
 
 ## Configuration
 
-### Settings Page (Settings → Cross Post for Dev.to)
+### Settings Page (Settings → Sync for Dev.to)
 
 | Setting | Description |
 |---|---|
@@ -160,6 +162,28 @@ When tests pass on `main`, the release workflow automatically:
 3. Updates the plugin header
 4. Creates a git tag (`v1.0.1`, etc.)
 5. Publishes a GitHub release with the plugin zip
+
+---
+
+## External Services
+
+This plugin connects to the **Dev.to API** (DEV Community, operated by Forem) at `https://dev.to/api/`. That connection is the plugin's core purpose: it is how your WordPress content is published to and kept in sync with your Dev.to account.
+
+**No data leaves your site until you enter a Dev.to API key.** With no key configured, the plugin makes no external requests at all.
+
+| When | What is sent |
+|---|---|
+| **"Test Connection"** on the settings screen | Your Dev.to API key only, to confirm it belongs to a real account |
+| **Publishing a post, or editing an already-synced post** (where cross-posting is enabled for it) | Title, content converted to Markdown, a short description (the excerpt, or first 30 words of content), tags, canonical URL, cover image URL, publish/draft status, and Organization ID if set — authenticated with your API key |
+| **"Sync Now"** in the editor sidebar, or the **Bulk Sync** tool | The same post data, for each post you sync |
+| **Trashing a synced post**, if **Unpublish on Trash** is enabled | A request setting that Dev.to article back to draft |
+
+No visitor data, site analytics, or personal information about your site's users is ever transmitted.
+
+Using this plugin means using Dev.to under DEV Community's own terms:
+
+- [Terms of Use](https://dev.to/terms)
+- [Privacy Policy](https://dev.to/privacy)
 
 ---
 

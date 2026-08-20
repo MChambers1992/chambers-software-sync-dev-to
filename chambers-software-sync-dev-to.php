@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name: Cross Post for Dev.to
+ * Plugin Name: Chambers Software Sync for Dev.to
  * Plugin URI:  https://github.com/MChambers1992/cross-post-devto
  * Description: Automatically cross-posts WordPress content to Dev.to with canonical URL support, tag mapping, and edit sync.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Michael Chambers
  * License:     GPL-2.0+
- * Text Domain: cross-post-devto
+ * Text Domain: chambers-software-sync-dev-to
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CROSS_POST_DEVTO_VERSION', '1.0.0' );
+define( 'CROSS_POST_DEVTO_VERSION', '1.0.1' );
 define( 'CROSS_POST_DEVTO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CROSS_POST_DEVTO_URL', plugin_dir_url( __FILE__ ) );
 define( 'CROSS_POST_DEVTO_BASENAME', plugin_basename( __FILE__ ) );

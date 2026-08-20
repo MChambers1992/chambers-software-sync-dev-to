@@ -29,32 +29,32 @@ jobs:
 
       - name: Verify tag matches plugin version header
         run: |
-          header_version=$(grep -oP "Version:\s*\K[0-9.]+" cross-post-devto.php)
+          header_version=$(grep -oP "Version:\s*\K[0-9.]+" chambers-software-sync-dev-to.php)
           if [ "$header_version" != "${{ steps.version.outputs.version }}" ]; then
-            echo "Tag v${{ steps.version.outputs.version }} does not match Version: $header_version in cross-post-devto.php" >&2
+            echo "Tag v${{ steps.version.outputs.version }} does not match Version: $header_version in chambers-software-sync-dev-to.php" >&2
             exit 1
           fi
 
       - name: Assemble clean plugin directory
         run: |
-          mkdir -p build/cross-post-devto
-          rsync -a --exclude-from='.distignore' ./ build/cross-post-devto/
+          mkdir -p build/chambers-software-sync-dev-to
+          rsync -a --exclude-from='.distignore' ./ build/chambers-software-sync-dev-to/
 
       - name: Zip plugin
         run: |
           cd build
-          zip -r "../cross-post-devto-${{ steps.version.outputs.version }}.zip" cross-post-devto
+          zip -r "../chambers-software-sync-dev-to-${{ steps.version.outputs.version }}.zip" chambers-software-sync-dev-to
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: plugin-zip
-          path: cross-post-devto-*.zip
+          path: chambers-software-sync-dev-to-*.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: cross-post-devto-*.zip
+          files: chambers-software-sync-dev-to-*.zip
           generate_release_notes: true
 
   deploy-wordpress-org:
@@ -72,4 +72,4 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: cross-post-devto
+          SLUG: chambers-software-sync-dev-to

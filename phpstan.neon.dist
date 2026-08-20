@@ -2,7 +2,7 @@ parameters:
     level: 5
     paths:
         - includes
-        - cross-post-devto.php
+        - chambers-software-sync-dev-to.php
     bootstrapFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
         - .phpstan/constants.php

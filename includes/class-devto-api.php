@@ -78,7 +78,7 @@ class Cross_Post_DevTo_API {
      */
     private function request( string $method, string $endpoint, ?array $body = null ) {
         if ( empty( $this->api_key ) ) {
-            return new WP_Error( 'no_api_key', __( 'Dev.to API key is not configured.', 'cross-post-devto' ) );
+            return new WP_Error( 'no_api_key', __( 'Dev.to API key is not configured.', 'chambers-software-sync-dev-to' ) );
         }
 
         $args = [
@@ -138,10 +138,10 @@ class Cross_Post_DevTo_API {
         $message = $retry_after
             ? sprintf(
                 /* translators: %s = number of seconds until the Dev.to rate limit resets */
-                __( 'Dev.to API rate limit hit. Retry after %s seconds.', 'cross-post-devto' ),
+                __( 'Dev.to API rate limit hit. Retry after %s seconds.', 'chambers-software-sync-dev-to' ),
                 $retry_after
             )
-            : __( 'Dev.to API rate limit hit. Try again shortly.', 'cross-post-devto' );
+            : __( 'Dev.to API rate limit hit. Try again shortly.', 'chambers-software-sync-dev-to' );
 
         return new WP_Error( 'devto_rate_limited', $message, [
             'status'      => 429,
